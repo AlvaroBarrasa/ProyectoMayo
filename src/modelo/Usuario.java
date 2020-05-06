@@ -2,10 +2,7 @@ package modelo;
 import java.sql.*;
 import java.time.LocalDate;
 import javax.swing.table.DefaultTableModel;
-/**
- * @web http://www.jc-mouse.net
- * @author Mouse
- */
+
 public class Usuario extends Conexion{
 
     private String dni, nombre, apellidos, email,direccion;

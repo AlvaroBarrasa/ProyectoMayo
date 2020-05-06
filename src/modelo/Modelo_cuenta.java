@@ -1,48 +1,41 @@
 package modelo;
 import java.sql.*;
+import java.time.LocalDate;
 import javax.swing.table.DefaultTableModel;
 /**
- * @web http://www.jc-mouse.net
- * @author Mouse
+ * @author Alvaro
  */
 public class Modelo_cuenta extends Conexion{
 
-    /** Constructor de clase */
+
     public Modelo_cuenta (){}
 
-    /** Obtiene registros de la tabla PRODUCTO y los devuelve en un DefaultTableModel*/
-    public DefaultTableModel getTablaProducto()
+    public DefaultTableModel getTablaCuenta()
     {
       DefaultTableModel tablemodel = new DefaultTableModel();
       int registros = 0;
-      String[] columNames = {"ID","Nombre","Precio","Cantidad"};
-      //obtenemos la cantidad de registros existentes en la tabla y se almacena en la variable "registros"
-      //para formar la matriz de datos
+      String[] columNames = {"nCuenta","Fecha_creación","Saldo"};
       try{
-         PreparedStatement pstm = this.getConexion().prepareStatement( "SELECT count(*) as total FROM Producto");
-         ResultSet res = pstm.executeQuery();
+         PreparedStatement st = this.getConexion().prepareStatement( "SELECT count(*) as total FROM Cuenta");
+         ResultSet res = st.executeQuery();
          res.next();
          registros = res.getInt("total");
          res.close();
       }catch(SQLException e){
          System.err.println( e.getMessage() );
       }
-    //se crea una matriz con tantas filas y columnas que necesite
     Object[][] data = new String[registros][5];
       try{
-          //realizamos la consulta sql y llenamos los datos en la matriz "Object[][] data"
-         PreparedStatement pstm = this.getConexion().prepareStatement("SELECT * FROM Producto");
+         PreparedStatement pstm = this.getConexion().prepareStatement("SELECT * FROM Cuenta");
          ResultSet res = pstm.executeQuery();
          int i=0;
          while(res.next()){
-                data[i][0] = res.getString( "id" );
-                data[i][1] = res.getString( "nombre" );
-                data[i][2] = res.getString( "precio" );
-                data[i][3] = res.getString( "cantidad" );
+                data[i][0] = res.getString( "nCuenta" );
+                data[i][1] = res.getString( "Fecha_creación" );
+                data[i][2] = res.getString( "Saldo" );
             i++;
          }
          res.close();
-         //se añade la matriz de datos en el DefaultTableModel
          tablemodel.setDataVector(data, columNames );
          }catch(SQLException e){
             System.err.println( e.getMessage() );
@@ -50,21 +43,15 @@ public class Modelo_cuenta extends Conexion{
         return tablemodel;
     }
 
-    /** Registra un nuevo producto */
-    public boolean NuevoProducto(String id, String nombre , String precio, String cantidad)
+    
+    public boolean NuevaCuenta(int nCuenta, LocalDate fecha_creacion , float saldo)
     {
-        if( valida_datos(id, nombre, precio, cantidad)  )
+        if( validar_cuenta(nCuenta, fecha_creacion, saldo)  )
         {
-            //se reemplaza "," por "."
-            precio = precio.replace(",", ".");
-            //Se arma la consulta
-            String q=" INSERT INTO Producto ( id , nombre , precio, cantidad  ) "
-                    + "VALUES ( '" + id + "','" + nombre + "', '" + precio + "'," + cantidad + " ) ";
-            //se ejecuta la consulta
             try {
-                PreparedStatement pstm = this.getConexion().prepareStatement(q);
-                pstm.execute();
-                pstm.close();
+                CallableStatement cs = (CallableStatement) this.getConexion().prepareStatement("{call Agregar_cuenta(?,?,?)}");
+                cs.execute();
+                cs.close();
                 return true;
             }catch(SQLException e){
                 System.err.println( e.getMessage() );
@@ -75,18 +62,14 @@ public class Modelo_cuenta extends Conexion{
          return false;
     }
 
-
-    /** Elimina un registro dado su ID -> Llave primaria */
-    public boolean EliminarProducto( String id )
+    public boolean EliminarProducto( int nCuenta )
     {
          boolean res=false;
-        //se arma la consulta
-        String q = " DELETE FROM Producto WHERE  id='" + id + "' " ;
-        //se ejecuta la consulta
+        String q = " DELETE FROM Cuenta WHERE  nCuenta='" + nCuenta + "' " ;
          try {
-            PreparedStatement pstm = this.getConexion().prepareStatement(q);
-            pstm.execute();
-            pstm.close();
+            PreparedStatement st = this.getConexion().prepareStatement(q);
+            st.execute();
+            st.close();
             res=true;
          }catch(SQLException e){
             System.err.println( e.getMessage() );
@@ -95,15 +78,13 @@ public class Modelo_cuenta extends Conexion{
     }
 
     /** Metodo privado para validar datos */
-    private boolean valida_datos(String id, String nombre , String precio, String cantidad)
+    private boolean validar_cuenta(int nCuenta, LocalDate fecha_creacion , float saldo)
     {
-        if( id.equals("  -   ") )
+        if (Integer.toString(nCuenta).length()!=20) {
             return false;
-        else if( nombre.length() > 0 && precio.length()>0 && cantidad.length() >0)
-        {
+    }else{
             return true;
         }
-        else  return false;
-    }
 
+}
 }
