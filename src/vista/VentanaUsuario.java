@@ -34,7 +34,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         addUsuario = new javax.swing.JButton();
         listarUsuario = new javax.swing.JButton();
-        addCuentaUsu = new javax.swing.JButton();
         listarCuentaUsuario = new javax.swing.JButton();
         modUsuario = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,13 +66,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
         listarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 listarUsuarioActionPerformed(evt);
-            }
-        });
-
-        addCuentaUsu.setText("Añadir cuenta a Usuario");
-        addCuentaUsu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addCuentaUsuActionPerformed(evt);
             }
         });
 
@@ -164,7 +156,7 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
 
-        retroceder.setText("Retoceder");
+        retroceder.setText("Retroceder");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,12 +166,16 @@ public class VentanaUsuario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(listarCuentaUsuario)
-                            .addComponent(listarUsuario))
+                        .addComponent(listarCuentaUsuario)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(retroceder)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(listarUsuario)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -194,9 +190,7 @@ public class VentanaUsuario extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(18, 18, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(addCuentaUsu, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(modUsuario, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                                .addComponent(modUsuario))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(26, 26, 26)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,17 +216,13 @@ public class VentanaUsuario extends javax.swing.JFrame {
                                             .addComponent(etiDireccion)
                                             .addComponent(Anio, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(32, 32, 32))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(retroceder)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(32, 32, 32))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(retroceder)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
@@ -269,10 +259,8 @@ public class VentanaUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etiDireccion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addCuentaUsu)
-                    .addComponent(Direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addComponent(Direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
                 .addComponent(listarUsuario)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,10 +277,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
     private void listarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listarUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_listarUsuarioActionPerformed
-
-    private void addCuentaUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCuentaUsuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addCuentaUsuActionPerformed
 
     private void NIFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NIFActionPerformed
         // TODO add your handling code here:
@@ -360,7 +344,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
     public javax.swing.JTextField Email;
     public javax.swing.JTextField NIF;
     public javax.swing.JTextField Nombre;
-    public javax.swing.JButton addCuentaUsu;
     public javax.swing.JButton addUsuario;
     private javax.swing.JLabel etiAnio;
     private javax.swing.JLabel etiApellidos;

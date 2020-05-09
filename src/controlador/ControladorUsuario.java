@@ -76,9 +76,6 @@ public class ControladorUsuario implements ActionListener, MouseListener {
                     JOptionPane.showMessageDialog(vista, "Datos muy largos o cortos");
                 }
                 break;
-            case addCuentaUsu:
-
-                break;
             case listarCuentaUsuario:
 
                 break;
@@ -175,9 +172,6 @@ public class ControladorUsuario implements ActionListener, MouseListener {
 
         this.vista.addUsuario.setActionCommand("addUsuario");
         this.vista.addUsuario.addActionListener(this);
-
-        this.vista.addCuentaUsu.setActionCommand("addCuentaUsu");
-        this.vista.addCuentaUsu.addActionListener(this);
 
         this.vista.listarCuentaUsuario.setActionCommand("listarCuentaUsuario");
         this.vista.listarCuentaUsuario.addActionListener(this);
