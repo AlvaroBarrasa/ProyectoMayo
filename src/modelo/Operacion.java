@@ -7,11 +7,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Operacion extends Conexion{
     
-    private String codigo;
-    private Tipo tipo_operacion;
+    private String codigo,tipo_operacion;
     private LocalDateTime fecha_realizacion;
     private Cuenta cuenta;
     private Usuario usuario;
+    private float cantidad;
     /** Constructor de clase */
     public Operacion (){}
 
@@ -23,11 +23,11 @@ public class Operacion extends Conexion{
         this.codigo = codigo;
     }
 
-    public Tipo getTipo_operacion() {
+    public String getTipo_operacion() {
         return tipo_operacion;
     }
 
-    public void setTipo_operacion(Tipo tipo_operacion) {
+    public void setTipo_operacion(String tipo_operacion) {
         this.tipo_operacion = tipo_operacion;
     }
 
@@ -53,6 +53,14 @@ public class Operacion extends Conexion{
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public float getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(float cantidad) {
+        this.cantidad = cantidad;
     }
 
    

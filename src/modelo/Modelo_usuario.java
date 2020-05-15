@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.sound.midi.SysexMessage;
 import javax.swing.table.DefaultTableModel;
 
@@ -52,9 +54,80 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
+    
+    public DefaultTableModel getTablaNombre(String nif)
+    {
+      DefaultTableModel tablemodel = new DefaultTableModel();
+      int registros = 0;
+      String[] columNames = {"NIF","Nombre","Apellidos"};
+      try{
+          // 
+         PreparedStatement st = this.getConexion().prepareStatement( "SELECT count(*) as total FROM Usuario WHERE NIF ="+nif);
+         ResultSet res = st.executeQuery();
+         res.next();
+         registros = res.getInt("total");
+         res.close();
+      }catch(SQLException e){
+         System.err.println( e.getMessage() );
+      }
+
+    Object[][] data = new String[registros][4];
+      try{
+         PreparedStatement st = this.getConexion().prepareStatement("SELECT * FROM Usuario WHERE NIF="+nif);
+         ResultSet resultado = st.executeQuery();
+         int i=0;
+         while(resultado.next()){
+                data[i][0] = resultado.getString( "NIF" );
+                data[i][1] = resultado.getString( "Nombre" );
+                data[i][2] = resultado.getString( "Apellidos" );
+            i++;
+         }
+         resultado.close();
+         tablemodel.setDataVector(data, columNames );
+         }catch(SQLException e){
+            System.err.println( e.getMessage() );
+        }
+        return tablemodel;
+    }
+    
+    public DefaultTableModel getTablaLista()
+    {
+      DefaultTableModel tablemodel = new DefaultTableModel();
+      int registros = 0;
+      String[] columNames = {"NIF","nCuenta","Saldo"};
+      try{
+          // 
+         PreparedStatement st = this.getConexion().prepareStatement( "SELECT count(*) as total FROM usu_cuenta");
+         ResultSet res = st.executeQuery();
+         res.next();
+         registros = res.getInt("total");
+         res.close();
+      }catch(SQLException e){
+         System.err.println( e.getMessage() );
+      }
+
+    Object[][] data = new String[registros][4];
+      try{
+         PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta");
+         ResultSet resultado = st.executeQuery();
+         int i=0;
+         while(resultado.next()){
+                data[i][0] = resultado.getString( "NIF" );
+                data[i][1] = resultado.getString( "nCuenta" );
+                data[i][2] = resultado.getString( "Saldo" );
+            i++;
+         }
+         resultado.close();
+         tablemodel.setDataVector(data, columNames );
+         }catch(SQLException e){
+            System.err.println( e.getMessage() );
+        }
+        return tablemodel;
+    }
+    
     public boolean NuevoUsuario(Usuario u)
     {
-        if( validar_usuario(u.getDni())  )
+        if( validar_dni(u.getDni())  )
         {
             try {
                 CallableStatement cs =  (CallableStatement) this.getConexion().prepareCall("{call Agregar_usuario(?,?,?,?,?,?,?)}");
@@ -77,19 +150,25 @@ public class Modelo_usuario extends Conexion {
          return false;
     }
     
-    private boolean validar_usuario(String dni)
-    {
-        try {
-            CallableStatement cs = (CallableStatement) this.getConexion().prepareCall("{?=call Valida_dni(?)}");
-            cs.registerOutParameter(1, Types.VARCHAR);
-            cs.setString(2, dni);
-            cs.execute();
-            cs.close();
-            return true;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
+    public boolean validar_dni(String dni) {
+        boolean correcto = false;
+        Pattern pattern = Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");
+        Matcher matcher = pattern.matcher(dni);
+        if (matcher.matches()) {
+            String letra = matcher.group(2);
+            String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            int index = Integer.parseInt(matcher.group(1));
+            index = index % 23;
+            String reference = letras.substring(index, index + 1);
+            if (reference.equalsIgnoreCase(letra)) {
+                correcto = true;
+            } else {
+                correcto = false;
+            }
+        } else {
+            correcto = false;
         }
-        return false;
+        return correcto;
     }
     
     public boolean ModificaUsuario(Usuario u)

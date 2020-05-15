@@ -52,7 +52,7 @@
                   <Component id="addCuenta" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="addTitular" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="188" max="32767" attributes="0"/>
+              <EmptySpace pref="51" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -78,6 +78,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir/Quitar titular"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="IconoUS">
     </Component>

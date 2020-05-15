@@ -8,17 +8,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Cuenta extends Conexion{
 
-    private int nCuenta;
+    private String nCuenta;
     private float saldo;
     private LocalDate fecha_creacion;
 
     public Cuenta (){}
 
-    public int getnCuenta() {
+    public String getnCuenta() {
         return nCuenta;
     }
 
-    public void setnCuenta(int nCuenta) {
+    public void setnCuenta(String nCuenta) {
         this.nCuenta = nCuenta;
     }
 

@@ -10,41 +10,53 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
+import java.time.LocalDate;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import vista.VentanaCuenta;
-import vista.VentanaPrincipal;
-import vista.VentanaUsuario;
+import modelo.Cuenta;
+import modelo.Modelo_cuenta;
+import vista.VentanaCrearCuenta;
+import vista.VentanaTitular;
+
 
 /**
  *
  * @author Alvaro
  */
-public class ControladorPrincipal implements ActionListener,MouseListener{
+public class ControladorCrearCuenta implements ActionListener, MouseListener{
+
     DefaultTableModel m;
     Statement sent;
-    VentanaPrincipal vista;
-
+    VentanaCrearCuenta vista;
+    Cuenta cuenta= new Cuenta();
+    Modelo_cuenta cu = new Modelo_cuenta();
+    VentanaTitular vistatitular;
+    
+    public ControladorCrearCuenta(VentanaCrearCuenta vista){
+        this.vista=vista;
+    }
+    
+    public enum AccionMVC {
+        confirmar
+    }
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-     
-        switch ( AccionMVC.valueOf( e.getActionCommand() ) )
-        {
-            case gestUsuario:
-                this.vista.dispose();
-                new ControladorUsuario(new VentanaUsuario()).iniciar();
+        switch (ControladorCrearCuenta.AccionMVC.valueOf(e.getActionCommand())) {
+            case confirmar:
+                if (this.vista.nCuenta.getText().length()!=10) {
+                    cuenta.setnCuenta(this.vista.sucursal.getText()+this.vista.nCuenta.getText());
+                    cuenta.setFecha_creacion(LocalDate.now());
+                    cuenta.setSaldo(Float.parseFloat(this.vista.saldo.getText()));
+                    if (cu.NuevaCuenta(cuenta)) {
+                        this.vista.dispose();
+                        new ControladorTitular(new VentanaTitular()).iniciar();
+                    }
+                }
                 break;
-            case gestCuenta:
-                this.vista.dispose();
-                new ControladorCuenta(new VentanaCuenta()).iniciar();
-                break;
-            case gestOperacion:
-                
-               
-                break;       
         }
     }
 
@@ -72,18 +84,6 @@ public class ControladorPrincipal implements ActionListener,MouseListener{
     public void mouseExited(MouseEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public enum AccionMVC
-    {
-        gestUsuario,
-        gestCuenta,
-        gestOperacion
-    }
-    
-    public ControladorPrincipal(VentanaPrincipal vista){
-        this.vista=vista;
-    }
-    
     public void iniciar()
     {
         try {
@@ -95,14 +95,8 @@ public class ControladorPrincipal implements ActionListener,MouseListener{
           catch (InstantiationException ex) {}
           catch (IllegalAccessException ex) {}
         
-        this.vista.gestUsuario.setActionCommand( "gestUsuario" );
-        this.vista.gestUsuario.addActionListener(this);
-
-        this.vista.gestCuenta.setActionCommand( "gestCuenta" );
-        this.vista.gestCuenta.addActionListener(this);
-
-        this.vista.gestOperacion.setActionCommand( "gestOperacion" );
-        this.vista.gestOperacion.addActionListener(this);
+        this.vista.confirmar.setActionCommand( "confirmar" );
+        this.vista.confirmar.addActionListener(this);
         
     }
 }

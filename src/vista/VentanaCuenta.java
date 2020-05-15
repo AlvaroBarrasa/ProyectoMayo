@@ -76,7 +76,7 @@ public class VentanaCuenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addCuenta)
                     .addComponent(addTitular))
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,7 +120,7 @@ public class VentanaCuenta extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel IconoUS;
     public javax.swing.JButton addCuenta;
-    private javax.swing.JButton addTitular;
+    public javax.swing.JButton addTitular;
     public javax.swing.JButton retroceder;
     // End of variables declaration//GEN-END:variables
 }

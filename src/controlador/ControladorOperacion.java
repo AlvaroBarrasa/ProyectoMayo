@@ -10,41 +10,40 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-import vista.VentanaCuenta;
-import vista.VentanaPrincipal;
-import vista.VentanaUsuario;
+import vista.VentanaOperacion;
 
 /**
  *
  * @author Alvaro
  */
-public class ControladorPrincipal implements ActionListener,MouseListener{
+public class ControladorOperacion implements ActionListener, MouseListener{
+    
     DefaultTableModel m;
     Statement sent;
-    VentanaPrincipal vista;
-
+    VentanaOperacion vista;
+    
+    public enum AccionMVC {
+        Ingreso,
+        Retirada,
+        Transaccion,
+        Retroceder,
+        Buscar
+    }
+    
+    
+    public ControladorOperacion(VentanaOperacion vista){
+        this.vista=vista;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
-     
-        switch ( AccionMVC.valueOf( e.getActionCommand() ) )
-        {
-            case gestUsuario:
-                this.vista.dispose();
-                new ControladorUsuario(new VentanaUsuario()).iniciar();
-                break;
-            case gestCuenta:
-                this.vista.dispose();
-                new ControladorCuenta(new VentanaCuenta()).iniciar();
-                break;
-            case gestOperacion:
+        switch(ControladorOperacion.AccionMVC.valueOf(e.getActionCommand())){
+            case Ingreso:
                 
-               
-                break;       
+                break;
         }
     }
 
@@ -73,36 +72,33 @@ public class ControladorPrincipal implements ActionListener,MouseListener{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public enum AccionMVC
-    {
-        gestUsuario,
-        gestCuenta,
-        gestOperacion
-    }
-    
-    public ControladorPrincipal(VentanaPrincipal vista){
-        this.vista=vista;
-    }
-    
-    public void iniciar()
-    {
+    public void iniciar() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
             SwingUtilities.updateComponentTreeUI(vista);
             vista.setVisible(true);
-        } catch (UnsupportedLookAndFeelException ex) {}
-          catch (ClassNotFoundException ex) {}
-          catch (InstantiationException ex) {}
-          catch (IllegalAccessException ex) {}
-        
-        this.vista.gestUsuario.setActionCommand( "gestUsuario" );
-        this.vista.gestUsuario.addActionListener(this);
+        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException ex) {
+        } catch (InstantiationException ex) {
+        } catch (IllegalAccessException ex) {
+        }
 
-        this.vista.gestCuenta.setActionCommand( "gestCuenta" );
-        this.vista.gestCuenta.addActionListener(this);
+        this.vista.Ingreso.setActionCommand("Ingreso");
+        this.vista.Ingreso.addActionListener(this);
 
-        this.vista.gestOperacion.setActionCommand( "gestOperacion" );
-        this.vista.gestOperacion.addActionListener(this);
+        this.vista.retroceder.setActionCommand("retroceder");
+        this.vista.retroceder.addActionListener(this);
         
+        this.vista.Retirada.setActionCommand("Retirada");
+        this.vista.Retirada.addActionListener(this);
+        
+        this.vista.Transaccion.setActionCommand("Transaccion");
+        this.vista.Transaccion.addActionListener(this);
+        
+        this.vista.Buscar.setActionCommand("Buscar");
+        this.vista.Buscar.addActionListener(this);
+        
+        this.vista.tabla.addMouseListener(this);
+        this.vista.tabla.setModel(m);
     }
 }

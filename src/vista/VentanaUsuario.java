@@ -20,6 +20,10 @@ public class VentanaUsuario extends javax.swing.JFrame {
      */
     public VentanaUsuario() {
         initComponents();
+         ImageIcon icono = new ImageIcon(getClass().getResource("/Imagenes/iconoUS.png"));
+        Icon fondo = new ImageIcon(icono.getImage().getScaledInstance(IconoUS.getWidth(), IconoUS.getHeight(), Image.SCALE_DEFAULT));
+        IconoUS.setIcon(fondo);
+        this.repaint();
     }
 
     /**
@@ -43,7 +47,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
         Nombre = new javax.swing.JTextField();
         Direccion = new javax.swing.JTextField();
         Email = new javax.swing.JTextField();
-        tlf = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaUsuarioCuenta = new javax.swing.JTable();
         etiNIF = new javax.swing.JLabel();
@@ -53,8 +56,10 @@ public class VentanaUsuario extends javax.swing.JFrame {
         etiDireccion = new javax.swing.JLabel();
         etiEmail = new javax.swing.JLabel();
         etiTLF = new javax.swing.JLabel();
-        Anio = new javax.swing.JTextField();
         retroceder = new javax.swing.JButton();
+        Anio = new javax.swing.JFormattedTextField();
+        tlf = new javax.swing.JFormattedTextField();
+        IconoUS = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
 
@@ -69,7 +74,8 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
 
-        listarCuentaUsuario.setText("Listar cuentas de un Usuario");
+        listarCuentaUsuario.setText("Listar usuarios y cuentas");
+        listarCuentaUsuario.setToolTipText("");
 
         modUsuario.setText("Modificar Datos");
 
@@ -110,23 +116,25 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
 
-        tlf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tlfActionPerformed(evt);
-            }
-        });
-
         tablaUsuarioCuenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "NIF", "Número de cuenta"
+                "NIF", "Número de cuenta", "Saldo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tablaUsuarioCuenta);
 
         etiNIF.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -150,12 +158,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
         etiTLF.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         etiTLF.setText("Teléfono");
 
-        Anio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AnioActionPerformed(evt);
-            }
-        });
-
         retroceder.setText("Retroceder");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,7 +178,7 @@ public class VentanaUsuario extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(listarUsuario)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
@@ -186,17 +188,19 @@ public class VentanaUsuario extends javax.swing.JFrame {
                                             .addComponent(Direccion, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                                             .addComponent(Nombre)
                                             .addComponent(Apellidos)
-                                            .addComponent(etiAnio, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addComponent(etiAnio, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(Anio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(26, 26, 26)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, Short.MAX_VALUE)
-                                                .addComponent(modUsuario))
+                                                .addComponent(etiTLF)
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(26, 26, 26)
+                                                .addComponent(tlf, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(tlf, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(etiTLF))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                                    .addComponent(addUsuario, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(modUsuario, javax.swing.GroupLayout.Alignment.TRAILING)))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(etiApellidos)
@@ -207,68 +211,67 @@ public class VentanaUsuario extends javax.swing.JFrame {
                                                 .addGap(85, 85, 85)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(etiEmail)
-                                                    .addComponent(Email, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(addUsuario))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(Email, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                             .addComponent(etiNombre)
-                                            .addComponent(etiDireccion)
-                                            .addComponent(Anio, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(etiDireccion))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(32, 32, 32))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(retroceder)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(addUsuario))
+                        .addContainerGap(23, Short.MAX_VALUE)
+                        .addComponent(retroceder)
+                        .addGap(52, 52, 52))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(etiNIF)
-                            .addComponent(etiEmail))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(etiApellidos)
-                            .addComponent(etiTLF))))
+                        .addContainerGap()
+                        .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiNIF)
+                    .addComponent(etiEmail))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etiApellidos)
+                    .addComponent(etiTLF))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(modUsuario))
+                        .addComponent(modUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(etiAnio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Anio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(etiDireccion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(listarUsuario))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addUsuario)
                             .addComponent(tlf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(etiNombre)
                         .addGap(2, 2, 2)
                         .addComponent(Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(etiAnio)
-                .addGap(11, 11, 11)
-                .addComponent(Anio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(etiDireccion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(listarUsuario)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(listarCuentaUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66))
         );
 
         pack();
@@ -293,14 +296,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
     private void DireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DireccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DireccionActionPerformed
-
-    private void tlfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tlfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tlfActionPerformed
-
-    private void AnioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AnioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -338,10 +333,11 @@ public class VentanaUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField Anio;
+    public javax.swing.JFormattedTextField Anio;
     public javax.swing.JTextField Apellidos;
     public javax.swing.JTextField Direccion;
     public javax.swing.JTextField Email;
+    private javax.swing.JLabel IconoUS;
     public javax.swing.JTextField NIF;
     public javax.swing.JTextField Nombre;
     public javax.swing.JButton addUsuario;
@@ -361,6 +357,6 @@ public class VentanaUsuario extends javax.swing.JFrame {
     public javax.swing.JButton retroceder;
     public javax.swing.JTable tablaUsuario;
     public javax.swing.JTable tablaUsuarioCuenta;
-    public javax.swing.JTextField tlf;
+    public javax.swing.JFormattedTextField tlf;
     // End of variables declaration//GEN-END:variables
 }
