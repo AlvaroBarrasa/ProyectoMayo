@@ -1,5 +1,6 @@
 package modelo;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -7,10 +8,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Operacion extends Conexion{
     
-    private String codigo,tipo_operacion;
-    private LocalDateTime fecha_realizacion;
-    private Cuenta cuenta;
-    private Usuario usuario;
+    private String codigo,tipo_operacion,cuenta,usuario,objetivo;
+    private LocalDate fecha_realizacion;
     private float cantidad;
     /** Constructor de clase */
     public Operacion (){}
@@ -31,27 +30,27 @@ public class Operacion extends Conexion{
         this.tipo_operacion = tipo_operacion;
     }
 
-    public LocalDateTime getFecha_realizacion() {
+    public LocalDate getFecha_realizacion() {
         return fecha_realizacion;
     }
 
-    public void setFecha_realizacion(LocalDateTime fecha_realizacion) {
+    public void setFecha_realizacion(LocalDate fecha_realizacion) {
         this.fecha_realizacion = fecha_realizacion;
     }
 
-    public Cuenta getCuenta() {
+    public String getCuenta() {
         return cuenta;
     }
 
-    public void setCuenta(Cuenta cuenta) {
+    public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
     }
 
-    public Usuario getUsuario() {
+    public String getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 
@@ -61,6 +60,14 @@ public class Operacion extends Conexion{
 
     public void setCantidad(float cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getObjetivo() {
+        return objetivo;
+    }
+
+    public void setObjetivo(String objetivo) {
+        this.objetivo = objetivo;
     }
 
    

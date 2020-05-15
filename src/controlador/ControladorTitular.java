@@ -43,27 +43,32 @@ public class ControladorTitular implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getButton()==1) {
+            int fila = this.vistaTitular.tabla.rowAtPoint(e.getPoint());
+            if (fila > -1) {
+                this.vistaTitular.NIF.setText(String.valueOf(this.vistaTitular.tabla.getValueAt(fila, 0)));
+            }
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override
@@ -82,12 +87,18 @@ public class ControladorTitular implements MouseListener, ActionListener {
                 break;
             case quitar:
                 if (this.vistaTitular.cuenta.getText().length()==10 && this.vistaTitular.NIF.getText().length()==9){
-                    if this.cu.eliminarTitular(nif)
+                    if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.cuenta.getText())){
+                        JOptionPane.showMessageDialog(vistaTitular, "Se ha quitado al usuario de la cuenta");
+                    }else{
+                        JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta no existente");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta mal introducido");
                 }
                 break;
                 
             case Busca:
-                this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.NIF.getText()));
+                this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
                 break;
         }
     }
@@ -109,11 +120,11 @@ public class ControladorTitular implements MouseListener, ActionListener {
         this.vistaTitular.quitar.setActionCommand("quitar");
         this.vistaTitular.quitar.addActionListener(this);
         
-        this.vistaTitular.Busca.setActionCommand("Busca");
-        this.vistaTitular.Busca.addActionListener(this);
+        this.vistaTitular.btnApellidos.setActionCommand("Busca");
+        this.vistaTitular.btnApellidos.addActionListener(this);
         
         this.vistaTitular.tabla.addMouseListener(this);
-        this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.NIF.getText()));
+        this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
     }
 
 }

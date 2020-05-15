@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import vista.VentanaCuenta;
+import vista.VentanaOperacion;
 import vista.VentanaPrincipal;
 import vista.VentanaUsuario;
 
@@ -42,8 +43,8 @@ public class ControladorPrincipal implements ActionListener,MouseListener{
                 new ControladorCuenta(new VentanaCuenta()).iniciar();
                 break;
             case gestOperacion:
-                
-               
+                this.vista.dispose();
+                new ControladorOperacion(new VentanaOperacion()).iniciar();
                 break;       
         }
     }

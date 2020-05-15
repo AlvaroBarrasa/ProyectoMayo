@@ -43,7 +43,6 @@ public class Modelo_cuenta extends Conexion{
         }
         return tablemodel;
     }
-
     
     public boolean NuevaCuenta(Cuenta c)
     {
@@ -85,10 +84,10 @@ public class Modelo_cuenta extends Conexion{
         }
     }
     
-    public boolean eliminarTitular( String nif )
+    public boolean eliminarTitular( String nif, String nCuenta )
     {
          boolean res=false;
-        String q = " DELETE FROM usu_cuenta WHERE  NIF='" + nif + "' " ;
+        String q = " DELETE FROM usu_cuenta WHERE  NIF='" + nif + "' AND nCuenta='"+nCuenta+"'" ;
          try {
             PreparedStatement st = this.getConexion().prepareStatement(q);
             st.execute();

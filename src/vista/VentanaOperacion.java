@@ -65,6 +65,7 @@ public class VentanaOperacion extends javax.swing.JFrame {
         retroceder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         Ingreso.setText("Ingreso");
 

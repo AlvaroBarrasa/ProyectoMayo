@@ -117,10 +117,10 @@ public class ControladorUsuario implements ActionListener, MouseListener {
     @Override
     public void mouseClicked(MouseEvent me) {
         if (me.getButton() == 1) {
-            this.vista.NIF.disable();
-            this.vista.Nombre.disable();
-            this.vista.Apellidos.disable();
-            this.vista.Anio.disable();
+            this.vista.NIF.setEnabled(false);
+            this.vista.Nombre.setEnabled(false);
+            this.vista.Apellidos.setEnabled(false);
+            this.vista.Anio.setEnabled(false);
             int fila = this.vista.tablaUsuario.rowAtPoint(me.getPoint());
             if (fila > -1) {
                 this.vista.NIF.setText(String.valueOf(this.vista.tablaUsuario.getValueAt(fila, 0)));
