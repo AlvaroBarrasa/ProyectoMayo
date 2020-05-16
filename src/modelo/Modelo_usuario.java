@@ -59,7 +59,7 @@ public class Modelo_usuario extends Conexion {
         String[] columNames = {"NIF", "Nombre", "Apellidos"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM Usuario WHERE NIF ='" + Apellidos + "'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM Usuario");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -68,9 +68,9 @@ public class Modelo_usuario extends Conexion {
             System.err.println(e.getMessage());
         }
 
-        Object[][] data = new String[registros][4];
+        Object[][] data = new String[registros][3];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT * FROM Usuario WHERE Apellidos='" + Apellidos + "'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, Nombre, Apellidos FROM Usuario WHERE Apellidos='" + Apellidos + "'");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {

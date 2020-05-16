@@ -42,47 +42,6 @@ public class ControladorCuenta implements ActionListener, MouseListener {
         retroceder
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (ControladorCuenta.AccionMVC.valueOf(e.getActionCommand())) {
-            case addCuenta:
-                new ControladorCrearCuenta(new VentanaCrearCuenta()).iniciar();
-                break;
-            case addTitular:
-                new ControladorTitular(new VentanaTitular()).iniciar();
-                break;
-            case retroceder:
-                this.vistaCuenta.dispose();
-                new ControladorPrincipal(new VentanaPrincipal()).iniciar();
-                break;
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public void iniciar() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -103,4 +62,49 @@ public class ControladorCuenta implements ActionListener, MouseListener {
         this.vistaCuenta.addTitular.setActionCommand("addTitular");
         this.vistaCuenta.addTitular.addActionListener(this);
     }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (ControladorCuenta.AccionMVC.valueOf(e.getActionCommand())) {
+            case addCuenta:
+                this.vistaCuenta.dispose();
+                new ControladorCrearCuenta(new VentanaCrearCuenta()).iniciar();
+                break;
+            case addTitular:
+                this.vistaCuenta.dispose();
+                new ControladorTitular(new VentanaTitular()).iniciar();
+                break;
+            case retroceder:
+                this.vistaCuenta.dispose();
+                new ControladorPrincipal(new VentanaPrincipal()).iniciar();
+                break;
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    
 }

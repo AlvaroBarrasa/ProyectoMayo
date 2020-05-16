@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Statement;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Cuenta;
 import modelo.Modelo_cuenta;
 import vista.VentanaCrearCuenta;
+import vista.VentanaCuenta;
 import vista.VentanaTitular;
 
 
@@ -39,51 +41,10 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
     }
     
     public enum AccionMVC {
-        confirmar
+        confirmar,
+        Retroceder
     }
     
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (ControladorCrearCuenta.AccionMVC.valueOf(e.getActionCommand())) {
-            case confirmar:
-                if (this.vista.nCuenta.getText().length()!=10) {
-                    cuenta.setnCuenta(this.vista.sucursal.getText()+this.vista.nCuenta.getText());
-                    cuenta.setFecha_creacion(LocalDate.now());
-                    cuenta.setSaldo(Float.parseFloat(this.vista.saldo.getText()));
-                    if (cu.NuevaCuenta(cuenta)) {
-                        this.vista.dispose();
-                        new ControladorTitular(new VentanaTitular()).iniciar();
-                    }
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     public void iniciar()
     {
         try {
@@ -97,6 +58,56 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
         
         this.vista.confirmar.setActionCommand( "confirmar" );
         this.vista.confirmar.addActionListener(this);
+        
+        this.vista.retroceder.setActionCommand("Retroceder");
+        this.vista.retroceder.addActionListener(this);
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (ControladorCrearCuenta.AccionMVC.valueOf(e.getActionCommand())) {
+            case confirmar:
+                if (this.vista.cuenta.getText().length()==10) {
+                    cuenta.setnCuenta(this.vista.sucursal.getText()+this.vista.cuenta.getText());
+                    cuenta.setFecha_creacion(LocalDate.now());
+                    cuenta.setSaldo(Float.parseFloat(this.vista.saldo.getText()));
+                    if (cu.NuevaCuenta(cuenta.getnCuenta(),cuenta.getFecha_creacion(),cuenta.getSaldo())) {
+                        this.vista.dispose();
+                        new ControladorTitular(new VentanaTitular()).iniciar();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(vista, "Número de cuenta no válido");
+                }
+                break;
+            case Retroceder:
+                this.vista.dispose();
+                new ControladorCuenta(new VentanaCuenta()).iniciar();
+                break;
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
         
     }
 }

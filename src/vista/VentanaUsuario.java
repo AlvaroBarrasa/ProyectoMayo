@@ -64,6 +64,7 @@ public class VentanaUsuario extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         addUsuario.setText("Añadir Usuario");
 
@@ -89,8 +90,25 @@ public class VentanaUsuario extends javax.swing.JFrame {
             new String [] {
                 "NIF", "Apellidos", "Nombre", "Año_nacimiento", "Dirección", "Email", "Teléfono"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tablaUsuario);
+        if (tablaUsuario.getColumnModel().getColumnCount() > 0) {
+            tablaUsuario.getColumnModel().getColumn(0).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(1).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(2).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(3).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(4).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(5).setResizable(false);
+            tablaUsuario.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         NIF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,7 +146,7 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -136,6 +154,11 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(tablaUsuarioCuenta);
+        if (tablaUsuarioCuenta.getColumnModel().getColumnCount() > 0) {
+            tablaUsuarioCuenta.getColumnModel().getColumn(0).setResizable(false);
+            tablaUsuarioCuenta.getColumnModel().getColumn(1).setResizable(false);
+            tablaUsuarioCuenta.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         etiNIF.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         etiNIF.setText("NIF");

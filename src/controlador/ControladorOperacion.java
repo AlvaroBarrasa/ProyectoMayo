@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -74,8 +75,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                 break;
             case Realizar:
                 if (this.vista.Ingreso.isSelected()) {
-                    this.vista.Cuenta_objetivo.setText(this.vista.Cuenta_prop.getText());
-                    if (this.vista.Cuenta_objetivo.getText().length() == 10) {
+                    if (Float.parseFloat(this.vista.Cantidad.getText())>0) {
                         try {
                             o.setCodigo("IN" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Ingreso");
@@ -83,24 +83,26 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
                             o.setUsuario(this.vista.NIF.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
-                            o.setObjetivo(this.vista.Cuenta_objetivo.getText());
-                            if (op.Ingreso(o) && op.NuevaOperacion(o)) {
+                            o.setObjetivo(this.vista.Cuenta_prop.getText());
+                            if (op.Ingreso(o.getCuenta(),o.getCantidad()) && op.NuevaOperacion(o)) {
                                 JOptionPane.showMessageDialog(vista, "Ingreso realizado correctamente");
                             } else {
                                 JOptionPane.showMessageDialog(vista, "Datos incorrectos");
                             }
-                        } catch (InputMismatchException im) {
+                        } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(vista, "Error al introducir los datos");
 
+                        } catch (SQLException ex) {
+                           JOptionPane.showMessageDialog(vista, "Datos repetidos");
+                        }catch(NullPointerException nu){
+                            JOptionPane.showMessageDialog(vista, "Rellene todos los campos posibles");
                         }
-
                     }
                 }
-                if (this.vista.Retirada.isSelected()) {
-                    this.vista.Cuenta_objetivo.setText(this.vista.Cuenta_prop.getText());
-                    if (this.vista.Cuenta_objetivo.getText().length() == 10) {
+                else if (this.vista.Retirada.isSelected()) {
+                    if (Float.parseFloat(this.vista.Cantidad.getText())>0) {
                         try {
                             o.setCodigo("RE" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Retirada");
@@ -108,13 +110,13 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
                             o.setUsuario(this.vista.NIF.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
-                            o.setObjetivo(this.vista.Cuenta_objetivo.getText());
+                            o.setObjetivo(this.vista.Cuenta_prop.getText());
                             if (op.Retirada(o) && op.NuevaOperacion(o)) {
                                 JOptionPane.showMessageDialog(vista, "Retirada realizada correctamente");
                             } else {
                                 JOptionPane.showMessageDialog(vista, "Datos incorrectos");
                             }
-                        } catch (InputMismatchException im) {
+                        } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(vista, "Error al introducir los datos");
@@ -122,8 +124,8 @@ public class ControladorOperacion implements ActionListener, MouseListener {
 
                     }
                 }
-                if (this.vista.Transaccion.isSelected()) {
-                    if (this.vista.Cuenta_objetivo.getText().length() == 10) {
+                else if (this.vista.Transaccion.isSelected()) {
+                    if (this.vista.Cuenta_objetivo.getText().length() == 23 && Float.parseFloat(this.vista.Cantidad.getText())>0) {
                         try {
                             o.setCodigo("TR" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Transaccion");
@@ -137,13 +139,16 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                             } else {
                                 JOptionPane.showMessageDialog(vista, "Datos incorrectos");
                             }
-                        } catch (InputMismatchException im) {
+                        } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(vista, "Error al introducir los datos");
                         }
 
                     }
+                }
+                else{
+                    JOptionPane.showMessageDialog(vista, "Seleccione una opción");
                 }
                 break;
             case Retroceder:
@@ -158,7 +163,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
         if (e.getButton() == 1) {
             int fila = this.vista.tabla.rowAtPoint(e.getPoint());
             if (fila > -1) {
-                this.vista.Cuenta_prop.setText(String.valueOf(this.vista.tabla.getValueAt(fila, 0)));
+                this.vista.Cuenta_prop.setText(String.valueOf(this.vista.tabla.getValueAt(fila, 1)));
             }
 
         }
@@ -209,8 +214,14 @@ public class ControladorOperacion implements ActionListener, MouseListener {
 
         this.vista.Buscar.setActionCommand("Buscar");
         this.vista.Buscar.addActionListener(this);
+        
+        this.vista.Realizar.setActionCommand("Realizar");
+        this.vista.Realizar.addActionListener(this);
 
         this.vista.tabla.addMouseListener(this);
         this.vista.tabla.setModel(this.op.getTablaTitular(this.vista.NIF.getText()));
+        
+        this.vista.retroceder.setActionCommand("Retroceder");
+        this.vista.retroceder.addActionListener(this);
     }
 }

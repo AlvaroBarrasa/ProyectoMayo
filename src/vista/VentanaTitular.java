@@ -51,6 +51,7 @@ public class VentanaTitular extends javax.swing.JFrame {
         btnApellidos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("NIF del usuario");
@@ -72,6 +73,11 @@ public class VentanaTitular extends javax.swing.JFrame {
 
         NIF.setEnabled(false);
 
+        tabla = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -94,6 +100,8 @@ public class VentanaTitular extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabla);
         if (tabla.getColumnModel().getColumnCount() > 0) {
             tabla.getColumnModel().getColumn(0).setResizable(false);
+            tabla.getColumnModel().getColumn(1).setResizable(false);
+            tabla.getColumnModel().getColumn(2).setResizable(false);
         }
 
         cuenta.addActionListener(new java.awt.event.ActionListener() {

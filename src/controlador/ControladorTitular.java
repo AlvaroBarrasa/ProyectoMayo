@@ -17,6 +17,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import modelo.Modelo_cuenta;
 import modelo.Modelo_usuario;
+import vista.VentanaCuenta;
 import vista.VentanaTitular;
 
 /**
@@ -38,7 +39,8 @@ public class ControladorTitular implements MouseListener, ActionListener {
     public enum AccionMVC {
         add,
         quitar,
-        Busca
+        Busca,
+        Retroceder
     }
 
     @Override
@@ -70,13 +72,13 @@ public class ControladorTitular implements MouseListener, ActionListener {
     public void mouseExited(MouseEvent e) {
        
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (ControladorTitular.AccionMVC.valueOf(e.getActionCommand())) {
             case add:
                 if (this.vistaTitular.cuenta.getText().length()==10 && this.vistaTitular.NIF.getText().length()==9) {
-                    if (this.cu.aniadirTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.cuenta.getText())) {
+                    if (this.cu.aniadirTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.cuenta.getText() )) {
                         JOptionPane.showMessageDialog(vistaTitular, "Se ha agregado un titular a la cuenta con éxito");
                     }else{
                         JOptionPane.showMessageDialog(vistaTitular, "Datos mal introducidos");
@@ -99,6 +101,10 @@ public class ControladorTitular implements MouseListener, ActionListener {
                 
             case Busca:
                 this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
+                break;
+            case Retroceder:
+                this.vistaTitular.dispose();
+                new ControladorCuenta(new VentanaCuenta()).iniciar();
                 break;
         }
     }
@@ -125,6 +131,9 @@ public class ControladorTitular implements MouseListener, ActionListener {
         
         this.vistaTitular.tabla.addMouseListener(this);
         this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
+        
+        this.vistaTitular.retroceder.setActionCommand("Retroceder");
+        this.vistaTitular.retroceder.addActionListener(this);
     }
 
 }

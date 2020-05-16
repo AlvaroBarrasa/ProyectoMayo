@@ -41,6 +41,7 @@ public class VentanaCuenta extends javax.swing.JFrame {
         IconoUS = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         retroceder.setText("Retroceder");
 

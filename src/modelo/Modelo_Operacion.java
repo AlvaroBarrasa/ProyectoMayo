@@ -1,19 +1,22 @@
 package modelo;
 
+import com.mysql.jdbc.exceptions.MySQLDataException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import vista.VentanaOperacion;
 
 public class Modelo_Operacion extends Conexion {
-
     /**
      * @author Alvaro
      */
     public Modelo_Operacion() {
     }
 
+    VentanaOperacion ope = new VentanaOperacion();
     BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
 
     public DefaultTableModel getTablaTitular(String nif) {
@@ -33,12 +36,13 @@ public class Modelo_Operacion extends Conexion {
 
         Object[][] data = new String[registros][3];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF='" + nif + "'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF,U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF='" + nif + "'");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
-                data[i][0] = resultado.getString("nCuenta");
-                data[i][1] = resultado.getString("Saldo");
+                data[i][0] = resultado.getString("NIF");
+                data[i][1] = resultado.getString("nCuenta");
+                data[i][2] = resultado.getString("Saldo");
                 i++;
             }
             resultado.close();
@@ -52,13 +56,13 @@ public class Modelo_Operacion extends Conexion {
     public boolean NuevaOperacion(Operacion o) {
         try {
             CallableStatement cs = this.getConexion().prepareCall("{call Nueva_operacion(?,?,?,?,?,?,?)}");
-            cs.setString(0, o.getCodigo());
-            cs.setString(1, o.getTipo_operacion());
-            cs.setDate(2, Date.valueOf(o.getFecha_realizacion()));
-            cs.setFloat(3, o.getCantidad());
-            cs.setString(4, o.getUsuario());
-            cs.setString(5, o.getCuenta());
-            cs.setString(6, o.getObjetivo());
+            cs.setString(1, o.getCodigo());
+            cs.setString(2, o.getTipo_operacion());
+            cs.setDate(3, Date.valueOf(o.getFecha_realizacion()));
+            cs.setFloat(4, o.getCantidad());
+            cs.setString(5, o.getUsuario());
+            cs.setString(6, o.getCuenta());
+            cs.setString(7, o.getObjetivo());
             cs.execute();
             cs.close();
             return true;
@@ -68,15 +72,14 @@ public class Modelo_Operacion extends Conexion {
         return false;
     }
 
-    public boolean Ingreso(Operacion o) {
+    public boolean Ingreso(String cuenta, float suma) throws SQLException {
+        String q="UPDATE Cuentas SET Saldo=Saldo+"+suma+"WHERE nCuenta=+"+cuenta;
         try {
-            CallableStatement cs = this.getConexion().prepareCall("{call Ingreso(?,?)}");
-            cs.setString(0, o.getObjetivo());
-            cs.setFloat(1, o.getCantidad());
-            cs.execute();
-            cs.close();
+            PreparedStatement st = this.getConexion().prepareCall(q);
+            st.execute();
+            st.close();
             return true;
-        } catch (SQLException e) {
+        } catch (MySQLDataException e) {
             System.err.println(e.getMessage());
         }
         return false;
@@ -85,8 +88,8 @@ public class Modelo_Operacion extends Conexion {
     public boolean Retirada(Operacion o) {
         try {
             CallableStatement cs = this.getConexion().prepareCall("{call Retirada(?,?)}");
-            cs.setString(0, o.getObjetivo());
-            cs.setFloat(1, o.getCantidad());
+            cs.setString(1, o.getObjetivo());
+            cs.setFloat(2, o.getCantidad());
             cs.execute();
             cs.close();
             return true;
@@ -99,9 +102,9 @@ public class Modelo_Operacion extends Conexion {
     public boolean Transaccion(Operacion o) {
         try {
             CallableStatement cs = this.getConexion().prepareCall("{call Transaccion(?,?,?)}");
-            cs.setString(0, o.getCuenta());
-            cs.setString(1, o.getObjetivo());
-            cs.setFloat(2, o.getCantidad());
+            cs.setString(1, o.getCuenta());
+            cs.setString(2, o.getObjetivo());
+            cs.setFloat(3, o.getCantidad());
             cs.execute();
             cs.close();
             return true;
@@ -116,7 +119,7 @@ public class Modelo_Operacion extends Conexion {
         int cont = 0;
         do {
             if (a.matches("^([0-9]+){1,2}$") == false) {
-                System.out.println("Introduzca solo numeros, por favor.");
+                JOptionPane.showMessageDialog(this.ope, "Introduzca solo números");
                 a = teclado.readLine();
             } else {
                 cont = 1;

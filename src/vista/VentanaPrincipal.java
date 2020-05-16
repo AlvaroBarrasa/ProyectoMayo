@@ -35,6 +35,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 5, 79));
+        setResizable(false);
 
         gestCuenta.setText("Gestionar Cuentas");
         gestCuenta.setActionCommand("Usuario");
