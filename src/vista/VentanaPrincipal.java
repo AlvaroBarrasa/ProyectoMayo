@@ -32,61 +32,36 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         gestCuenta = new javax.swing.JButton();
         gestOperacion = new javax.swing.JButton();
         gestUsuario = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(240, 5, 79));
+        setMinimumSize(new java.awt.Dimension(530, 370));
         setResizable(false);
+        getContentPane().setLayout(null);
+        getContentPane().add(IconoUS);
+        IconoUS.setBounds(200, 20, 104, 73);
 
         gestCuenta.setText("Gestionar Cuentas");
         gestCuenta.setActionCommand("Usuario");
+        getContentPane().add(gestCuenta);
+        gestCuenta.setBounds(320, 141, 137, 38);
+        gestCuenta.getAccessibleContext().setAccessibleName("Usuario");
 
         gestOperacion.setText("Realizar Operación");
         gestOperacion.setToolTipText("");
         gestOperacion.setActionCommand("Usuario");
+        getContentPane().add(gestOperacion);
+        gestOperacion.setBounds(176, 233, 137, 38);
 
         gestUsuario.setText("Gestionar Usuarios");
         gestUsuario.setActionCommand("Usuario");
+        getContentPane().add(gestUsuario);
+        gestUsuario.setBounds(50, 140, 137, 38);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(201, 201, 201)
-                .addComponent(gestOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(gestCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(209, 209, 209)
-                .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(49, 49, 49)
-                    .addComponent(gestUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(343, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(gestCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(168, 168, 168))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(gestOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(133, 133, 133)
-                    .addComponent(gestUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(168, Short.MAX_VALUE)))
-        );
-
-        gestCuenta.getAccessibleContext().setAccessibleName("Usuario");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo.jpg"))); // NOI18N
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(0, 0, 530, 350);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -107,6 +82,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public javax.swing.JButton gestCuenta;
     public javax.swing.JButton gestOperacion;
     public javax.swing.JButton gestUsuario;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 
 }

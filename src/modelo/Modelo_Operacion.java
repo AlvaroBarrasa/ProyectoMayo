@@ -120,7 +120,6 @@ public class Modelo_Operacion extends Conexion {
         do {
             if (a.matches("^([0-9]+){1,2}$") == false) {
                 JOptionPane.showMessageDialog(this.ope, "Introduzca solo números");
-                a = teclado.readLine();
             } else {
                 cont = 1;
             }
