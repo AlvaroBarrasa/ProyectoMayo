@@ -20,7 +20,7 @@ import modelo.Cuenta;
 import modelo.Modelo_cuenta;
 import vista.VentanaCrearCuenta;
 import vista.VentanaCuenta;
-import vista.VentanaTitular;
+import vista.VentanaQuitarTitular;
 
 
 /**
@@ -34,7 +34,7 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
     VentanaCrearCuenta vista;
     Cuenta cuenta= new Cuenta();
     Modelo_cuenta cu = new Modelo_cuenta();
-    VentanaTitular vistatitular;
+    VentanaQuitarTitular vistatitular;
     
     public ControladorCrearCuenta(VentanaCrearCuenta vista){
         this.vista=vista;
@@ -73,7 +73,7 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
                     cuenta.setSaldo(Float.parseFloat(this.vista.saldo.getText()));
                     if (cu.NuevaCuenta(cuenta.getnCuenta(),cuenta.getFecha_creacion(),cuenta.getSaldo())) {
                         this.vista.dispose();
-                        new ControladorTitular(new VentanaTitular()).iniciar();
+                        new ControladorQuitarTitular(new VentanaQuitarTitular()).iniciar();
                     }
                 }else{
                     JOptionPane.showMessageDialog(vista, "Número de cuenta no válido");

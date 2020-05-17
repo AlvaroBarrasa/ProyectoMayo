@@ -17,10 +17,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import vista.VentanaAñadirTitular;
 import vista.VentanaCrearCuenta;
 import vista.VentanaCuenta;
 import vista.VentanaPrincipal;
-import vista.VentanaTitular;
+import vista.VentanaQuitarTitular;
 
 /**
  *
@@ -38,6 +39,7 @@ public class ControladorCuenta implements ActionListener, MouseListener {
 
     public enum AccionMVC {
         addCuenta,
+        quitarTitular,
         addTitular,
         retroceder
     }
@@ -59,6 +61,9 @@ public class ControladorCuenta implements ActionListener, MouseListener {
         this.vistaCuenta.retroceder.setActionCommand("retroceder");
         this.vistaCuenta.retroceder.addActionListener(this);
         
+        this.vistaCuenta.quitarTitular.setActionCommand("addTitular");
+        this.vistaCuenta.quitarTitular.addActionListener(this);
+        
         this.vistaCuenta.addTitular.setActionCommand("addTitular");
         this.vistaCuenta.addTitular.addActionListener(this);
     }
@@ -70,9 +75,13 @@ public class ControladorCuenta implements ActionListener, MouseListener {
                 this.vistaCuenta.dispose();
                 new ControladorCrearCuenta(new VentanaCrearCuenta()).iniciar();
                 break;
+            case quitarTitular:
+                this.vistaCuenta.dispose();
+                new ControladorQuitarTitular(new VentanaQuitarTitular()).iniciar();
+                break;
             case addTitular:
                 this.vistaCuenta.dispose();
-                new ControladorTitular(new VentanaTitular()).iniciar();
+                new ControladorAddTitular(new VentanaAñadirTitular()).iniciar();
                 break;
             case retroceder:
                 this.vistaCuenta.dispose();

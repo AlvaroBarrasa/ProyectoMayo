@@ -18,28 +18,26 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Modelo_cuenta;
 import modelo.Modelo_usuario;
 import vista.VentanaCuenta;
-import vista.VentanaTitular;
+import vista.VentanaQuitarTitular;
 
 /**
  *
  * @author Alvaro
  */
-public class ControladorTitular implements MouseListener, ActionListener {
+public class ControladorQuitarTitular implements MouseListener, ActionListener {
 
     DefaultTableModel m;
     Statement sent;
-    VentanaTitular vistaTitular;
+    VentanaQuitarTitular vistaTitular;
     Modelo_usuario usu = new Modelo_usuario();
     Modelo_cuenta cu = new Modelo_cuenta();
 
-    public ControladorTitular(VentanaTitular vistaTitular){
+    public ControladorQuitarTitular(VentanaQuitarTitular vistaTitular){
         this.vistaTitular=vistaTitular;
     }
     
     public enum AccionMVC {
-        add,
         quitar,
-        Busca,
         Retroceder
     }
 
@@ -49,6 +47,7 @@ public class ControladorTitular implements MouseListener, ActionListener {
             int fila = this.vistaTitular.tabla.rowAtPoint(e.getPoint());
             if (fila > -1) {
                 this.vistaTitular.NIF.setText(String.valueOf(this.vistaTitular.tabla.getValueAt(fila, 0)));
+                this.vistaTitular.sucursal.setText(String.valueOf(this.vistaTitular.tabla.getValueAt(fila, 3)));
             }
         }
     }
@@ -75,21 +74,10 @@ public class ControladorTitular implements MouseListener, ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (ControladorTitular.AccionMVC.valueOf(e.getActionCommand())) {
-            case add:
-                if (this.vistaTitular.cuenta.getText().length()==10 && this.vistaTitular.NIF.getText().length()==9) {
-                    if (this.cu.aniadirTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.cuenta.getText() )) {
-                        JOptionPane.showMessageDialog(vistaTitular, "Se ha agregado un titular a la cuenta con éxito");
-                    }else{
-                        JOptionPane.showMessageDialog(vistaTitular, "Datos mal introducidos");
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(vistaTitular, "Longitud de datos incorrecta");
-                }
-                break;
+        switch (ControladorQuitarTitular.AccionMVC.valueOf(e.getActionCommand())) {
             case quitar:
-                if (this.vistaTitular.cuenta.getText().length()==10 && this.vistaTitular.NIF.getText().length()==9){
-                    if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.cuenta.getText())){
+                if (this.vistaTitular.sucursal.getText().length()==23 && this.vistaTitular.NIF.getText().length()==9){
+                    if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.sucursal.getText())){
                         JOptionPane.showMessageDialog(vistaTitular, "Se ha quitado al usuario de la cuenta");
                     }else{
                         JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta no existente");
@@ -97,10 +85,6 @@ public class ControladorTitular implements MouseListener, ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta mal introducido");
                 }
-                break;
-                
-            case Busca:
-                this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
                 break;
             case Retroceder:
                 this.vistaTitular.dispose();
@@ -119,18 +103,12 @@ public class ControladorTitular implements MouseListener, ActionListener {
         } catch (InstantiationException ex) {
         } catch (IllegalAccessException ex) {
         }
-
-        this.vistaTitular.add.setActionCommand("add");
-        this.vistaTitular.add.addActionListener(this);
-
+        
         this.vistaTitular.quitar.setActionCommand("quitar");
         this.vistaTitular.quitar.addActionListener(this);
         
-        this.vistaTitular.btnApellidos.setActionCommand("Busca");
-        this.vistaTitular.btnApellidos.addActionListener(this);
-        
         this.vistaTitular.tabla.addMouseListener(this);
-        this.vistaTitular.tabla.setModel(this.usu.getTablaNombre(this.vistaTitular.Apellidos.getText()));
+        this.vistaTitular.tabla.setModel(this.usu.getTablaTitular(this.vistaTitular.BuscaNIF.getText()));
         
         this.vistaTitular.retroceder.setActionCommand("Retroceder");
         this.vistaTitular.retroceder.addActionListener(this);

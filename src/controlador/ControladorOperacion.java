@@ -44,13 +44,15 @@ public class ControladorOperacion implements ActionListener, MouseListener {
     int hora = k.getHour();
     int minutos = k.getMinute();
     int segundos = k.getSecond();
+    int anio = k.getYear();
+    int mes = k.getMonthValue();
+    int dia = k.getDayOfMonth();
 
     public enum AccionMVC {
         Ingreso,
         Retirada,
         Transaccion,
         Retroceder,
-        Buscar,
         Realizar
     }
 
@@ -70,51 +72,49 @@ public class ControladorOperacion implements ActionListener, MouseListener {
             case Transaccion:
                 this.vista.Cuenta_objetivo.setEnabled(true);
                 break;
-            case Buscar:
-                this.vista.tabla.setModel(this.op.getTablaTitular(this.vista.NIF.getText()));
-                break;
             case Realizar:
                 if (this.vista.Ingreso.isSelected()) {
-                    if (Float.parseFloat(this.vista.Cantidad.getText())>0) {
+                    if (Double.parseDouble(this.vista.Cantidad.getText())>0) {
                         try {
-                            o.setCodigo("IN" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
+                            o.setCodigo("IN" +String.valueOf(anio)+String.valueOf(mes)+String.valueOf(dia)+ String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Ingreso");
                             o.setFecha_realizacion(LocalDate.now());
-                            o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
-                            o.setUsuario(this.vista.NIF.getText());
+                            o.setCantidad(Double.parseDouble(this.vista.Cantidad.getText()));
+                            o.setUsuario(this.vista.nif_elegido.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
                             o.setObjetivo(this.vista.Cuenta_prop.getText());
-                            if (op.Ingreso(o.getCuenta(),o.getCantidad()) && op.NuevaOperacion(o)) {
+                            if (op.Ingreso(o) && op.NuevaOperacion(o)) {
                                 JOptionPane.showMessageDialog(vista, "Ingreso realizado correctamente");
                             } else {
                                 JOptionPane.showMessageDialog(vista, "Datos incorrectos");
                             }
                         } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(vista, "Error al introducir los datos");
-
-                        } catch (SQLException ex) {
-                           JOptionPane.showMessageDialog(vista, "Datos repetidos");
+                        }catch (SQLException ex) {
+                            System.err.println(ex.getMessage());
                         }catch(NullPointerException nu){
                             JOptionPane.showMessageDialog(vista, "Rellene todos los campos posibles");
                         }
                     }
                 }
                 else if (this.vista.Retirada.isSelected()) {
-                    if (Float.parseFloat(this.vista.Cantidad.getText())>0) {
+                    if (Double.parseDouble(this.vista.Cantidad.getText())>0) {
                         try {
-                            o.setCodigo("RE" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
+                            o.setCodigo("RE" +String.valueOf(anio)+String.valueOf(mes)+String.valueOf(dia)+ String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Retirada");
                             o.setFecha_realizacion(LocalDate.now());
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
                             o.setUsuario(this.vista.NIF.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
                             o.setObjetivo(this.vista.Cuenta_prop.getText());
-                            if (op.Retirada(o) && op.NuevaOperacion(o)) {
-                                JOptionPane.showMessageDialog(vista, "Retirada realizada correctamente");
+                            if (Double.parseDouble(this.vista.comp.getText())-o.getCantidad()>=0) {
+                                if (op.Retirada(o) && op.NuevaOperacion(o)) {
+                                    JOptionPane.showMessageDialog(vista, "Retirada realizada correctamente");
+                                }else{
+                                    JOptionPane.showMessageDialog(vista, "Datos incorrectos");
+                                }
                             } else {
-                                JOptionPane.showMessageDialog(vista, "Datos incorrectos");
+                                JOptionPane.showMessageDialog(vista, "No puede retirar una cantidad superior a su saldo");
                             }
                         } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
@@ -125,26 +125,29 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                     }
                 }
                 else if (this.vista.Transaccion.isSelected()) {
-                    if (this.vista.Cuenta_objetivo.getText().length() == 23 && Float.parseFloat(this.vista.Cantidad.getText())>0) {
+                    if (this.vista.Cuenta_objetivo.getText().length() == 23 && Double.parseDouble(this.vista.Cantidad.getText())>0) {
                         try {
-                            o.setCodigo("TR" + String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
+                            o.setCodigo("TR" +String.valueOf(anio)+String.valueOf(mes)+String.valueOf(dia)+ String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Transaccion");
                             o.setFecha_realizacion(LocalDate.now());
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
-                            o.setUsuario(this.vista.NIF.getText());
+                            o.setUsuario(this.vista.nif_elegido.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
                             o.setObjetivo(this.vista.Cuenta_objetivo.getText());
-                            if (op.Transaccion(o) && op.NuevaOperacion(o)) {
-                                JOptionPane.showMessageDialog(vista, "Transacción realizada correctamente");
+                            if (Double.parseDouble(this.vista.comp.getText())-o.getCantidad()>=0) {
+                                if (op.Transaccion(o) && op.NuevaOperacion(o)) {
+                                    JOptionPane.showMessageDialog(vista, "Retirada realizada correctamente");
+                                }else{
+                                    JOptionPane.showMessageDialog(vista, "Datos incorrectos");
+                                }
                             } else {
-                                JOptionPane.showMessageDialog(vista, "Datos incorrectos");
+                                JOptionPane.showMessageDialog(vista, "No puede retirar una cantidad superior a su saldo");
                             }
                         } catch (NumberFormatException im) {
                             JOptionPane.showMessageDialog(vista, "Ponga números en la cantidad");
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(vista, "Error al introducir los datos");
                         }
-
                     }
                 }
                 else{
@@ -163,7 +166,9 @@ public class ControladorOperacion implements ActionListener, MouseListener {
         if (e.getButton() == 1) {
             int fila = this.vista.tabla.rowAtPoint(e.getPoint());
             if (fila > -1) {
+                this.vista.nif_elegido.setText(String.valueOf(this.vista.tabla.getValueAt(fila, 0)));
                 this.vista.Cuenta_prop.setText(String.valueOf(this.vista.tabla.getValueAt(fila, 1)));
+                this.vista.comp.setText(String.valueOf(this.vista.tabla.getValueAt(fila, 2)));
             }
 
         }
@@ -200,20 +205,17 @@ public class ControladorOperacion implements ActionListener, MouseListener {
         } catch (IllegalAccessException ex) {
         }
 
+        this.vista.nif_elegido.setVisible(false);
+        this.vista.comp.setVisible(false);
+        
         this.vista.Ingreso.setActionCommand("Ingreso");
         this.vista.Ingreso.addActionListener(this);
-
-        this.vista.retroceder.setActionCommand("retroceder");
-        this.vista.retroceder.addActionListener(this);
 
         this.vista.Retirada.setActionCommand("Retirada");
         this.vista.Retirada.addActionListener(this);
 
         this.vista.Transaccion.setActionCommand("Transaccion");
         this.vista.Transaccion.addActionListener(this);
-
-        this.vista.Buscar.setActionCommand("Buscar");
-        this.vista.Buscar.addActionListener(this);
         
         this.vista.Realizar.setActionCommand("Realizar");
         this.vista.Realizar.addActionListener(this);

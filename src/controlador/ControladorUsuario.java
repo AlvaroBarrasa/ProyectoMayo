@@ -106,6 +106,9 @@ public class ControladorUsuario implements ActionListener, MouseListener {
                     JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
                 }
                 this.vista.NIF.setEnabled(true);
+                this.vista.Nombre.setEnabled(true);
+                this.vista.Apellidos.setEnabled(true);
+                this.vista.Anio.setEnabled(true);
                 break;
             case retroceder:
                 this.vista.dispose();

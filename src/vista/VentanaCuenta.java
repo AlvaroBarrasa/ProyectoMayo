@@ -37,8 +37,9 @@ public class VentanaCuenta extends javax.swing.JFrame {
 
         retroceder = new javax.swing.JButton();
         addCuenta = new javax.swing.JButton();
-        addTitular = new javax.swing.JButton();
+        quitarTitular = new javax.swing.JButton();
         IconoUS = new javax.swing.JLabel();
+        addTitular = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -47,7 +48,19 @@ public class VentanaCuenta extends javax.swing.JFrame {
 
         addCuenta.setText("Crear cuenta");
 
-        addTitular.setText("Añadir/Quitar titular");
+        quitarTitular.setText("Quitar titular");
+        quitarTitular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarTitularActionPerformed(evt);
+            }
+        });
+
+        addTitular.setText("Añadir titular");
+        addTitular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTitularActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,9 +75,11 @@ public class VentanaCuenta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(addCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
                 .addComponent(addTitular)
-                .addGap(69, 69, 69))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(quitarTitular)
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,12 +91,21 @@ public class VentanaCuenta extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addCuenta)
+                    .addComponent(quitarTitular)
                     .addComponent(addTitular))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void quitarTitularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarTitularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_quitarTitularActionPerformed
+
+    private void addTitularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTitularActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addTitularActionPerformed
 
     /**
      * @param args the command line arguments
@@ -122,6 +146,7 @@ public class VentanaCuenta extends javax.swing.JFrame {
     private javax.swing.JLabel IconoUS;
     public javax.swing.JButton addCuenta;
     public javax.swing.JButton addTitular;
+    public javax.swing.JButton quitarTitular;
     public javax.swing.JButton retroceder;
     // End of variables declaration//GEN-END:variables
 }

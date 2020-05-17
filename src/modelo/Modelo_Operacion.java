@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import vista.VentanaOperacion;
 
 public class Modelo_Operacion extends Conexion {
+
     /**
      * @author Alvaro
      */
@@ -33,10 +34,9 @@ public class Modelo_Operacion extends Conexion {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
-
         Object[][] data = new String[registros][3];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF,U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF='" + nif + "'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF,U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF LIKE '%" + nif + "%'");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
@@ -54,15 +54,9 @@ public class Modelo_Operacion extends Conexion {
     }
 
     public boolean NuevaOperacion(Operacion o) {
+        String q = "INSERT INTO Operaciones VALUES('" + o.getCodigo() + "','" + o.getTipo_operacion() + "','" + o.getFecha_realizacion() + "','" + o.getCantidad() + "','" + o.getUsuario() + "','" + o.getCuenta() + "','" + o.getObjetivo() + "')";
         try {
-            CallableStatement cs = this.getConexion().prepareCall("{call Nueva_operacion(?,?,?,?,?,?,?)}");
-            cs.setString(1, o.getCodigo());
-            cs.setString(2, o.getTipo_operacion());
-            cs.setDate(3, Date.valueOf(o.getFecha_realizacion()));
-            cs.setFloat(4, o.getCantidad());
-            cs.setString(5, o.getUsuario());
-            cs.setString(6, o.getCuenta());
-            cs.setString(7, o.getObjetivo());
+            PreparedStatement cs = this.getConexion().prepareStatement(q);
             cs.execute();
             cs.close();
             return true;
@@ -72,25 +66,24 @@ public class Modelo_Operacion extends Conexion {
         return false;
     }
 
-    public boolean Ingreso(String cuenta, float suma) throws SQLException {
-        String q="UPDATE Cuentas SET Saldo=Saldo+"+suma+"WHERE nCuenta=+"+cuenta;
+    public boolean Ingreso(Operacion o) throws SQLException {
+        String q = "UPDATE Cuentas SET Saldo=Saldo+" + o.getCantidad() + " WHERE nCuenta ='" + o.getCuenta() + "'";
         try {
-            PreparedStatement st = this.getConexion().prepareCall(q);
-            st.execute();
-            st.close();
+            PreparedStatement cs = this.getConexion().prepareStatement(q);
+            cs.executeUpdate();
+            cs.close();
             return true;
         } catch (MySQLDataException e) {
-            System.err.println(e.getMessage());
+            System.err.println("error");
         }
         return false;
     }
 
     public boolean Retirada(Operacion o) {
+        String q = "UPDATE Cuentas SET Saldo=Saldo-" + o.getCantidad() + " WHERE nCuenta ='" + o.getCuenta() + "'";
         try {
-            CallableStatement cs = this.getConexion().prepareCall("{call Retirada(?,?)}");
-            cs.setString(1, o.getObjetivo());
-            cs.setFloat(2, o.getCantidad());
-            cs.execute();
+            PreparedStatement cs = this.getConexion().prepareStatement(q);
+            cs.executeUpdate();
             cs.close();
             return true;
         } catch (SQLException e) {
@@ -100,13 +93,15 @@ public class Modelo_Operacion extends Conexion {
     }
 
     public boolean Transaccion(Operacion o) {
+        String q = "UPDATE Cuentas SET Saldo=Saldo+" + o.getCantidad() + " WHERE nCuenta ='" + o.getObjetivo() + "'";
+        String w = "UPDATE Cuentas SET Saldo=Saldo-" + o.getCantidad() + " WHERE nCuenta ='" + o.getCuenta() + "'";
         try {
-            CallableStatement cs = this.getConexion().prepareCall("{call Transaccion(?,?,?)}");
-            cs.setString(1, o.getCuenta());
-            cs.setString(2, o.getObjetivo());
-            cs.setFloat(3, o.getCantidad());
-            cs.execute();
+            PreparedStatement cs = this.getConexion().prepareStatement(q);
+            cs.executeUpdate();
             cs.close();
+            PreparedStatement ct = this.getConexion().prepareStatement(w);
+            ct.executeUpdate();
+            ct.close();
             return true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());

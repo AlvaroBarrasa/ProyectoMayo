@@ -10,7 +10,7 @@ public class Operacion extends Conexion{
     
     private String codigo,tipo_operacion,cuenta,usuario,objetivo;
     private LocalDate fecha_realizacion;
-    private float cantidad;
+    private double cantidad;
     /** Constructor de clase */
     public Operacion (){}
 
@@ -54,11 +54,11 @@ public class Operacion extends Conexion{
         this.usuario = usuario;
     }
 
-    public float getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(float cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
