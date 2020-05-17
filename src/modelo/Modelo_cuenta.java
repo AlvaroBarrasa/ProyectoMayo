@@ -27,7 +27,7 @@ public class Modelo_cuenta extends Conexion {
         int registros = 0;
         String[] columNames = {"nCuenta", "Fecha_creación", "Saldo"};
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM Cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM Cuentas");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -37,7 +37,7 @@ public class Modelo_cuenta extends Conexion {
         }
         Object[][] data = new String[registros][5];
         try {
-            PreparedStatement pstm = this.getConexion().prepareStatement("SELECT * FROM Cuenta");
+            PreparedStatement pstm = this.getConexion().prepareStatement("SELECT * FROM Cuentas");
             ResultSet res = pstm.executeQuery();
             int i = 0;
             while (res.next()) {
@@ -99,37 +99,41 @@ public class Modelo_cuenta extends Conexion {
     }
 
     public boolean aniadirTitular(String nif, String nCuenta) {
-        String q = " INSERT INTO usu_cuenta VALUES ('"+nif+"','"+nCuenta+"')";
+        
+        //String q = " INSERT INTO usua_cuenta VALUES('"+nif+"','"+nCuenta+"')";
         try {
-            PreparedStatement st= this.getConexion().prepareStatement(q);
-            st.execute();
-            st.close();
+            CallableStatement cs = this.getConexion().prepareCall("{call Agregar_titular(?,?)}");
+            cs.setString(1, nif);
+            cs.setString(2, nCuenta);
+          //  PreparedStatement cs = this.getConexion().prepareStatement(q);
+            cs.execute();
+            cs.close();
             return true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        }catch(ArrayIndexOutOfBoundsException ar){
+            System.err.println(ar.getMessage());
         }
         return false;
 
     }
 
     public boolean eliminarTitular(String nif, String nCuenta) {
-        boolean res = false;
-        String q = " DELETE FROM usu_cuenta WHERE  NIF='" + nif + "' AND nCuenta='" + nCuenta + "'";
+        String q = " DELETE FROM usuar_cuenta WHERE  NIF='" + nif + "' AND nCuenta='" + nCuenta + "'";
         try {
             PreparedStatement st = this.getConexion().prepareStatement(q);
             st.execute();
             st.close();
-            res = true;
+            return true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-        }
-        return res;
+        }return false;
     }
 
     public boolean verifica_add(String nif, String cuenta){
         int registros=0;
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usu_cuenta WHERE NIF='"+nif+"' AND nCuenta='"+cuenta+"'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta WHERE NIF='"+nif+"' AND nCuenta='"+cuenta+"'");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");

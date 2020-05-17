@@ -61,7 +61,7 @@ public class ControladorCuenta implements ActionListener, MouseListener {
         this.vistaCuenta.retroceder.setActionCommand("retroceder");
         this.vistaCuenta.retroceder.addActionListener(this);
         
-        this.vistaCuenta.quitarTitular.setActionCommand("addTitular");
+        this.vistaCuenta.quitarTitular.setActionCommand("quitarTitular");
         this.vistaCuenta.quitarTitular.addActionListener(this);
         
         this.vistaCuenta.addTitular.setActionCommand("addTitular");

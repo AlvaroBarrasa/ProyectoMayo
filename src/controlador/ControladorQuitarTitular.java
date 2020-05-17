@@ -76,15 +76,16 @@ public class ControladorQuitarTitular implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (ControladorQuitarTitular.AccionMVC.valueOf(e.getActionCommand())) {
             case quitar:
-                if (this.vistaTitular.sucursal.getText().length()==23 && this.vistaTitular.NIF.getText().length()==9){
-                    if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(), this.vistaTitular.sucursal.getText()+this.vistaTitular.sucursal.getText())){
+                if (this.vistaTitular.tabla.getModel().getRowCount()>1) {
+                    if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(),this.vistaTitular.sucursal.getText())){
                         JOptionPane.showMessageDialog(vistaTitular, "Se ha quitado al usuario de la cuenta");
                     }else{
                         JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta no existente");
                     }
                 }else{
-                    JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta mal introducido");
+                    JOptionPane.showMessageDialog(vistaTitular, "La cuenta no se puede quedar sin titular");
                 }
+                this.vistaTitular.tabla.setModel(this.usu.getTablaTitular1());
                 break;
             case Retroceder:
                 this.vistaTitular.dispose();
@@ -108,7 +109,7 @@ public class ControladorQuitarTitular implements MouseListener, ActionListener {
         this.vistaTitular.quitar.addActionListener(this);
         
         this.vistaTitular.tabla.addMouseListener(this);
-        this.vistaTitular.tabla.setModel(this.usu.getTablaTitular(this.vistaTitular.BuscaNIF.getText()));
+        this.vistaTitular.tabla.setModel(this.usu.getTablaTitular(this.vistaTitular.BuscaCuenta.getText()));
         
         this.vistaTitular.retroceder.setActionCommand("Retroceder");
         this.vistaTitular.retroceder.addActionListener(this);

@@ -104,7 +104,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                             o.setTipo_operacion("Retirada");
                             o.setFecha_realizacion(LocalDate.now());
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
-                            o.setUsuario(this.vista.NIF.getText());
+                            o.setUsuario(this.vista.nif_elegido.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
                             o.setObjetivo(this.vista.Cuenta_prop.getText());
                             if (Double.parseDouble(this.vista.comp.getText())-o.getCantidad()>=0) {
@@ -125,7 +125,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                     }
                 }
                 else if (this.vista.Transaccion.isSelected()) {
-                    if (this.vista.Cuenta_objetivo.getText().length() == 23 && Double.parseDouble(this.vista.Cantidad.getText())>0) {
+                    if (this.vista.Cuenta_objetivo.getText().length() == 10 && Double.parseDouble(this.vista.Cantidad.getText())>0) {
                         try {
                             o.setCodigo("TR" +String.valueOf(anio)+String.valueOf(mes)+String.valueOf(dia)+ String.valueOf(hora) + String.valueOf(minutos) + String.valueOf(segundos));
                             o.setTipo_operacion("Transaccion");
@@ -133,7 +133,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
                             o.setCantidad(Float.parseFloat(op.soloNumeros(this.vista.Cantidad.getText())));
                             o.setUsuario(this.vista.nif_elegido.getText());
                             o.setCuenta(this.vista.Cuenta_prop.getText());
-                            o.setObjetivo(this.vista.Cuenta_objetivo.getText());
+                            o.setObjetivo(this.vista.sucursal.getText()+this.vista.Cuenta_objetivo.getText());
                             if (Double.parseDouble(this.vista.comp.getText())-o.getCantidad()>=0) {
                                 if (op.Transaccion(o) && op.NuevaOperacion(o)) {
                                     JOptionPane.showMessageDialog(vista, "Retirada realizada correctamente");
@@ -205,7 +205,7 @@ public class ControladorOperacion implements ActionListener, MouseListener {
         } catch (IllegalAccessException ex) {
         }
 
-        this.vista.nif_elegido.setVisible(false);
+      //  this.vista.nif_elegido.setVisible(false);
         this.vista.comp.setVisible(false);
         
         this.vista.Ingreso.setActionCommand("Ingreso");

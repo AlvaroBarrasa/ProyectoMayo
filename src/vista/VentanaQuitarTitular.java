@@ -8,6 +8,8 @@ package vista;
 import java.awt.Image;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+import modelo.Modelo_usuario;
 
 /**
  *
@@ -26,6 +28,12 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
         this.repaint();
     }
 
+    public void buscaCuenta(String cuenta){
+        Modelo_usuario usu = new Modelo_usuario();
+        DefaultTableModel m = usu.getTablaTitular(cuenta);
+        tabla.setModel(m);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +50,7 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
         sucursal = new javax.swing.JTextField();
         NIF = new javax.swing.JTextField();
         retroceder = new javax.swing.JButton();
-        BuscaNIF = new javax.swing.JTextField();
+        BuscaCuenta = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -69,14 +77,19 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
 
         retroceder.setText("Retroceder");
 
-        BuscaNIF.addActionListener(new java.awt.event.ActionListener() {
+        BuscaCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscaNIFActionPerformed(evt);
+                BuscaCuentaActionPerformed(evt);
+            }
+        });
+        BuscaCuenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                BuscaCuentaKeyReleased(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Buscador de NIF");
+        jLabel3.setText("Buscador de cuenta");
 
         tabla = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex){
@@ -107,13 +120,16 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
             tabla.getColumnModel().getColumn(0).setResizable(false);
             tabla.getColumnModel().getColumn(1).setResizable(false);
             tabla.getColumnModel().getColumn(2).setResizable(false);
-            tabla.getColumnModel().getColumn(3).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(quitar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(275, 275, 275))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,27 +143,21 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(BuscaNIF, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BuscaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
-                                .addGap(121, 121, 121))))
+                                .addGap(196, 196, 196)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(retroceder)
                         .addGap(84, 84, 84)
                         .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addComponent(quitar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(53, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,13 +176,13 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BuscaNIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BuscaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(27, 27, 27)
                 .addComponent(quitar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -182,9 +192,13 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sucursalActionPerformed
 
-    private void BuscaNIFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaNIFActionPerformed
+    private void BuscaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaCuentaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BuscaNIFActionPerformed
+    }//GEN-LAST:event_BuscaCuentaActionPerformed
+
+    private void BuscaCuentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaCuentaKeyReleased
+        buscaCuenta(BuscaCuenta.getText());
+    }//GEN-LAST:event_BuscaCuentaKeyReleased
 
     /**
      * @param args the command line arguments
@@ -223,7 +237,7 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JTextField BuscaNIF;
+    public javax.swing.JTextField BuscaCuenta;
     private javax.swing.JLabel IconoUS;
     public javax.swing.JTextField NIF;
     private javax.swing.JLabel jLabel1;

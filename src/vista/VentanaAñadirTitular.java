@@ -152,6 +152,11 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaUsuarioMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablaUsuario);
         if (tablaUsuario.getColumnModel().getColumnCount() > 0) {
             tablaUsuario.getColumnModel().getColumn(0).setResizable(false);
@@ -179,13 +184,13 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
                                         .addComponent(retroceder)
                                         .addGap(51, 51, 51)
                                         .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(sucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(cuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(80, 80, 80)
-                                        .addComponent(cuenta_elegida, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cuenta_elegida, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(22, 22, 22))
                     .addGroup(layout.createSequentialGroup()
@@ -242,6 +247,11 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
     private void nifKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nifKeyReleased
         buscarUsuario(nif.getText());
     }//GEN-LAST:event_nifKeyReleased
+
+    private void tablaUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuarioMouseClicked
+        int index = tablaUsuario.getSelectedRow();
+        nif_elegido.setText(String.valueOf(tablaUsuario.getValueAt(index, 0)));
+    }//GEN-LAST:event_tablaUsuarioMouseClicked
 
     /**
      * @param args the command line arguments

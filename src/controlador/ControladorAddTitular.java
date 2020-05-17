@@ -50,13 +50,13 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
         } catch (InstantiationException ex) {
         } catch (IllegalAccessException ex) {
         }
-        this.vista.cuenta_elegida.setVisible(false);
-        this.vista.nif_elegido.setVisible(false);
+       // this.vista.cuenta_elegida.setVisible(false);
+        //this.vista.nif_elegido.setVisible(false);
         
         this.vista.add.setActionCommand("add");
         this.vista.add.addActionListener(this);
 
-        this.vista.retroceder.setActionCommand("retroceder");
+        this.vista.retroceder.setActionCommand("Retroceder");
         this.vista.retroceder.addActionListener(this);
 
         this.vista.tablaCuentas.addMouseListener(this);
@@ -73,7 +73,12 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
     
     @Override
     public void mouseClicked(MouseEvent e) {
-       
+        if (e.getButton()==1) {
+            int fila=this.vista.tablaCuentas.rowAtPoint(e.getPoint());
+            if (fila > -1) {
+                this.vista.cuenta_elegida.setText(String.valueOf(this.vista.tablaCuentas.getValueAt(fila, 0)));
+            }
+        }
     }
 
     @Override
@@ -96,17 +101,13 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
     public void actionPerformed(ActionEvent e) {
         switch (ControladorAddTitular.AccionMVC.valueOf(e.getActionCommand())) {
             case add:
-            try {
-                if (this.cu.verifica_add(this.vista.nif_elegido.getText(), this.vista.sucursal.getText()+this.cu.soloNumeros(this.vista.cuenta.getText()))) {
-                    if (this.cu.aniadirTitular(this.vista.nif_elegido.getText(), this.vista.sucursal.getText()+this.cu.soloNumeros(this.vista.cuenta.getText()))) {
-                        JOptionPane.showMessageDialog(vista, "Titular añadido correctamente");
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(vista, "Esta relación ya existe");
+        {
+                if (this.cu.aniadirTitular(this.vista.nif_elegido.getText(),this.vista.cuenta_elegida.getText())) {
+                    JOptionPane.showMessageDialog(vista, "Titular añadido correctamente");   
                 }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-            }   
+        }
+    
+            
                 break;
             case Retroceder:
                 this.vista.dispose();

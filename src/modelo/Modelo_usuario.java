@@ -93,7 +93,7 @@ public class Modelo_usuario extends Conexion {
         String[] columNames = {"NIF", "nCuenta", "Saldo"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usu_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -104,7 +104,7 @@ public class Modelo_usuario extends Conexion {
 
         Object[][] data = new String[registros][4];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, U.nCuenta, C.Saldo FROM usuar_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
@@ -121,13 +121,13 @@ public class Modelo_usuario extends Conexion {
         return tablemodel;
     }
     
-    public DefaultTableModel getTablaTitular(String nif) {
+    public DefaultTableModel getTablaTitular(String cuenta) {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
         String[] columNames = {"NIF", "Apellidos", "Nombre","nCuenta"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usu_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -138,7 +138,42 @@ public class Modelo_usuario extends Conexion {
 
         Object[][] data = new String[registros][4];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM usu_cuenta UC, Usuario U WHERE U.NIF=UC.NIF AND UC.NIF='"+nif+"'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM usuar_cuenta UC, Usuario U WHERE U.NIF=UC.NIF AND UC.nCuenta LIKE '%"+cuenta+"%'");
+            ResultSet resultado = st.executeQuery();
+            int i = 0;
+            while (resultado.next()) {
+                data[i][0] = resultado.getString("NIF");
+                data[i][1] = resultado.getString("Apellidos");
+                data[i][2] = resultado.getString("Nombre");
+                data[i][3] = resultado.getString("nCuenta");
+                i++;
+            }
+            resultado.close();
+            tablemodel.setDataVector(data, columNames);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return tablemodel;
+    }
+    
+   public DefaultTableModel getTablaTitular1() {
+        DefaultTableModel tablemodel = new DefaultTableModel();
+        int registros = 0;
+        String[] columNames = {"NIF", "Apellidos", "Nombre","nCuenta"};
+        try {
+            // 
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
+            ResultSet res = st.executeQuery();
+            res.next();
+            registros = res.getInt("total");
+            res.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        Object[][] data = new String[registros][4];
+        try {
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM usuar_cuenta UC, Usuario U WHERE U.NIF=UC.NIF");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {

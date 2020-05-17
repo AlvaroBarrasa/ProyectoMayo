@@ -26,7 +26,7 @@ public class Modelo_Operacion extends Conexion {
         String[] columNames = {"NIF", "nCuenta", "Saldo"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usu_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -36,7 +36,7 @@ public class Modelo_Operacion extends Conexion {
         }
         Object[][] data = new String[registros][3];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF,U.nCuenta, C.Saldo FROM usu_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF LIKE '%" + nif + "%'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF,U.nCuenta, C.Saldo FROM usuar_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta AND NIF LIKE '%" + nif + "%'");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
@@ -52,6 +52,8 @@ public class Modelo_Operacion extends Conexion {
         }
         return tablemodel;
     }
+    
+    
 
     public boolean NuevaOperacion(Operacion o) {
         String q = "INSERT INTO Operaciones VALUES('" + o.getCodigo() + "','" + o.getTipo_operacion() + "','" + o.getFecha_realizacion() + "','" + o.getCantidad() + "','" + o.getUsuario() + "','" + o.getCuenta() + "','" + o.getObjetivo() + "')";
@@ -67,14 +69,17 @@ public class Modelo_Operacion extends Conexion {
     }
 
     public boolean Ingreso(Operacion o) throws SQLException {
+        System.out.println(o.getCodigo()+" "+o.getTipo_operacion()+" "+o.getFecha_realizacion()+" "+o.getCantidad()+" "+o.getUsuario()+" "+o.getCuenta()+" "+o.getObjetivo());
         String q = "UPDATE Cuentas SET Saldo=Saldo+" + o.getCantidad() + " WHERE nCuenta ='" + o.getCuenta() + "'";
         try {
             PreparedStatement cs = this.getConexion().prepareStatement(q);
             cs.executeUpdate();
             cs.close();
             return true;
-        } catch (MySQLDataException e) {
-            System.err.println("error");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }catch(NumberFormatException nm){
+            System.err.println(nm.getMessage());
         }
         return false;
     }

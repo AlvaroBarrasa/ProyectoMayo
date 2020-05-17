@@ -18,6 +18,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cuenta;
 import modelo.Modelo_cuenta;
+import vista.VentanaAñadirTitular;
 import vista.VentanaCrearCuenta;
 import vista.VentanaCuenta;
 import vista.VentanaQuitarTitular;
@@ -73,7 +74,7 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
                     cuenta.setSaldo(Float.parseFloat(this.vista.saldo.getText()));
                     if (cu.NuevaCuenta(cuenta.getnCuenta(),cuenta.getFecha_creacion(),cuenta.getSaldo())) {
                         this.vista.dispose();
-                        new ControladorQuitarTitular(new VentanaQuitarTitular()).iniciar();
+                        new ControladorAddTitular(new VentanaAñadirTitular()).iniciar();
                     }
                 }else{
                     JOptionPane.showMessageDialog(vista, "Número de cuenta no válido");
