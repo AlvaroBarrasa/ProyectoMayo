@@ -25,22 +25,30 @@ import vista.VentanaQuitarTitular;
  * @author Alvaro
  */
 public class ControladorQuitarTitular implements MouseListener, ActionListener {
-
-    DefaultTableModel m;
-    Statement sent;
+/**
+ * Importo las clases para utilizar los métodos
+ */
     VentanaQuitarTitular vistaTitular;
     Modelo_usuario usu = new Modelo_usuario();
     Modelo_cuenta cu = new Modelo_cuenta();
-
+/**
+ * Constructor para abrir la ventana desde otras vistas
+ * @param vistaTitular 
+ */
     public ControladorQuitarTitular(VentanaQuitarTitular vistaTitular){
         this.vistaTitular=vistaTitular;
     }
-    
+    /**
+     * Pongo en el enum los botones que tendrá la vista
+     */
     public enum AccionMVC {
         quitar,
         Retroceder
     }
-
+/**
+ *  Metodo para dar valores a los campos haciendo click en la tabla
+ * @param e 
+ */
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getButton()==1) {
@@ -71,29 +79,33 @@ public class ControladorQuitarTitular implements MouseListener, ActionListener {
     public void mouseExited(MouseEvent e) {
        
     }
-    
+    /**
+     * Switch case para que haga una acción depende de los botones que se seleccionen 
+     * @param e 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (ControladorQuitarTitular.AccionMVC.valueOf(e.getActionCommand())) {
+            //Verifica si se puede eliminar al titular de la cuenta
             case quitar:
-                if (this.vistaTitular.tabla.getModel().getRowCount()>1) {
                     if (this.cu.eliminarTitular(this.vistaTitular.NIF.getText(),this.vistaTitular.sucursal.getText())){
                         JOptionPane.showMessageDialog(vistaTitular, "Se ha quitado al usuario de la cuenta");
                     }else{
-                        JOptionPane.showMessageDialog(vistaTitular, "Número de cuenta no existente");
+                        JOptionPane.showMessageDialog(vistaTitular, "La cuenta no se puede quedar sin titular");
                     }
-                }else{
-                    JOptionPane.showMessageDialog(vistaTitular, "La cuenta no se puede quedar sin titular");
-                }
+                //Actualiza la tabla si borra un registro
                 this.vistaTitular.tabla.setModel(this.usu.getTablaTitular1());
                 break;
+                //Retrocede a la ventana anterior
             case Retroceder:
                 this.vistaTitular.dispose();
                 new ControladorCuenta(new VentanaCuenta()).iniciar();
                 break;
         }
     }
-
+/**
+ * Metodo para iniciar la vista y las acciones de los botones
+ */
     public void iniciar() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");

@@ -28,18 +28,23 @@ import vista.VentanaCuenta;
  *
  * @author Alvaro
  */
-public class ControladorAddTitular implements MouseListener, ActionListener{
+public class ControladorAddTitular implements MouseListener, ActionListener {
+
     DefaultTableModel m;
     VentanaAñadirTitular vista;
     Modelo_cuenta cu = new Modelo_cuenta();
-    Cuenta c= new Cuenta();
+    Cuenta c = new Cuenta();
     Modelo_usuario usu = new Modelo_usuario();
-    
+/**
+ * Pongo en el enum los botones que tendrá la vista
+ */
     public enum AccionMVC {
         Retroceder,
         add
     }
-    
+/**
+ * Método que inicia la ventana y da funciones a los botones
+ */
     public void iniciar() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -50,9 +55,9 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
         } catch (InstantiationException ex) {
         } catch (IllegalAccessException ex) {
         }
-       // this.vista.cuenta_elegida.setVisible(false);
+        //this.vista.cuenta_elegida.setVisible(false);
         //this.vista.nif_elegido.setVisible(false);
-        
+
         this.vista.add.setActionCommand("add");
         this.vista.add.addActionListener(this);
 
@@ -61,24 +66,22 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
 
         this.vista.tablaCuentas.addMouseListener(this);
         this.vista.tablaCuentas.setModel(this.cu.getTablaInfo(this.vista.cuenta.getText()));
-        
+
         this.vista.tablaUsuario.addMouseListener(this);
         this.vista.tablaUsuario.setModel(this.usu.getTablaNombre(this.vista.nif.getText()));
-        
+
     }
-    
-    public ControladorAddTitular(VentanaAñadirTitular vista){
-        this.vista=vista;
+/**
+ * Constructor para iniciar la vista desde otra ventana
+ * @param vista 
+ */
+    public ControladorAddTitular(VentanaAñadirTitular vista) {
+        this.vista = vista;
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton()==1) {
-            int fila=this.vista.tablaCuentas.rowAtPoint(e.getPoint());
-            if (fila > -1) {
-                this.vista.cuenta_elegida.setText(String.valueOf(this.vista.tablaCuentas.getValueAt(fila, 0)));
-            }
-        }
+       
     }
 
     @Override
@@ -96,24 +99,27 @@ public class ControladorAddTitular implements MouseListener, ActionListener{
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
+/**
+ * Switch case para que haga una acción dependiendo de lo que seleccione
+ * @param e 
+ */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (ControladorAddTitular.AccionMVC.valueOf(e.getActionCommand())) {
-            case add:
-        {
-                if (this.cu.aniadirTitular(this.vista.nif_elegido.getText(),this.vista.cuenta_elegida.getText())) {
-                    JOptionPane.showMessageDialog(vista, "Titular añadido correctamente");   
+            // Aniade un registro a la tabla us_cuentas eligiendo los registros de la tabla
+            case add: {
+                if (this.cu.aniadirTitular(this.vista.nif_elegido.getText(), this.vista.cuenta_elegida.getText())) {
+                    JOptionPane.showMessageDialog(vista, "Titular añadido correctamente");
                 }
-        }
-    
-            
-                break;
+            }
+
+            break;
+            // Abre la ventana anterior
             case Retroceder:
                 this.vista.dispose();
                 new ControladorCuenta(new VentanaCuenta()).iniciar();
                 break;
         }
     }
-    
+
 }

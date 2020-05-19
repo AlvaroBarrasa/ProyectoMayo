@@ -1,6 +1,9 @@
 package modelo;
 import java.sql.*;
-
+/**
+ * Clase para conectarme a la base de datos
+ * @author Alvaro
+ */
 public class Conexion {
 
   private String db = "abarrasa_US";

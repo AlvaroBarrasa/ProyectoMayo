@@ -29,23 +29,30 @@ import vista.VentanaQuitarTitular;
  * @author Alvaro
  */
 public class ControladorCrearCuenta implements ActionListener, MouseListener{
-
-    DefaultTableModel m;
-    Statement sent;
+/**
+ * Importo la clase de modelo_cuenta y ventana titular para utilizar sus metodos
+ */
     VentanaCrearCuenta vista;
     Cuenta cuenta= new Cuenta();
     Modelo_cuenta cu = new Modelo_cuenta();
     VentanaQuitarTitular vistatitular;
-    
+    /**
+     * Constructor para abrir la ventana desde otras vistas
+     * @param vista 
+     */
     public ControladorCrearCuenta(VentanaCrearCuenta vista){
         this.vista=vista;
     }
-    
+/**
+ * Pongo en el enum los botones que tendrá la vista
+ */
     public enum AccionMVC {
         confirmar,
         Retroceder
     }
-    
+    /**
+     * Metodo para iniciar la vista y las acciones de los botones
+     */
     public void iniciar()
     {
         try {
@@ -63,10 +70,13 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
         this.vista.retroceder.setActionCommand("Retroceder");
         this.vista.retroceder.addActionListener(this);
     }
-    
+    /**
+     * Switch case para que haga una acción depende de los botones que se seleccionen 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (ControladorCrearCuenta.AccionMVC.valueOf(e.getActionCommand())) {
+            //Crea una cuenta cogiendo el texto de los campos, inicializando el valor del saldo en 0
             case confirmar:
                 if (this.vista.cuenta.getText().length()==10) {
                     cuenta.setnCuenta(this.vista.sucursal.getText()+this.vista.cuenta.getText());
@@ -80,6 +90,7 @@ public class ControladorCrearCuenta implements ActionListener, MouseListener{
                     JOptionPane.showMessageDialog(vista, "Número de cuenta no válido");
                 }
                 break;
+                //Cierra la ventana y abre la anterior
             case Retroceder:
                 this.vista.dispose();
                 new ControladorCuenta(new VentanaCuenta()).iniciar();

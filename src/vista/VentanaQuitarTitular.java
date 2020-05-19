@@ -27,7 +27,10 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
         IconoUS.setIcon(fondo);
         this.repaint();
     }
-
+/**
+ * Metodo que filtra los registros y los muestra en la tabla
+ * @param cuenta 
+ */
     public void buscaCuenta(String cuenta){
         Modelo_usuario usu = new Modelo_usuario();
         DefaultTableModel m = usu.getTablaTitular(cuenta);
@@ -151,13 +154,13 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
                                     .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(retroceder)
-                        .addGap(84, 84, 84)
-                        .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(53, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(retroceder)
+                                .addGap(84, 84, 84)
+                                .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,9 +178,9 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BuscaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NIF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BuscaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
@@ -195,7 +198,10 @@ public class VentanaQuitarTitular extends javax.swing.JFrame {
     private void BuscaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaCuentaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BuscaCuentaActionPerformed
-
+/**
+ * Metodo para que cuando inserte caracteres en el campo de texto use el metodo buscar
+ * @param evt 
+ */
     private void BuscaCuentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaCuentaKeyReleased
         buscaCuenta(BuscaCuenta.getText());
     }//GEN-LAST:event_BuscaCuentaKeyReleased

@@ -21,7 +21,10 @@ public class Modelo_cuenta extends Conexion {
             
     public Modelo_cuenta() {
     }
-
+/**
+ * Metodo que lista todas las cuentas
+ * @return 
+ */
     public DefaultTableModel getTablaCuenta() {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
@@ -53,7 +56,11 @@ public class Modelo_cuenta extends Conexion {
         }
         return tablemodel;
     }
-    
+    /**
+     * Metodo para listar las cuentas en la vista de aniadir titulares
+     * @param cuenta
+     * @return 
+     */
     public DefaultTableModel getTablaInfo(String cuenta) {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
@@ -84,7 +91,13 @@ public class Modelo_cuenta extends Conexion {
         }
         return tablemodel;
     }
-
+/**
+ * Metodo para insertar una nueva cuenta en la base de datos
+ * @param nCuenta
+ * @param fecha
+ * @param saldo
+ * @return 
+ */
     public boolean NuevaCuenta(String nCuenta, LocalDate fecha, float saldo) {
         String q = "INSERT INTO Cuentas VALUES('"+nCuenta+"','"+fecha+"','"+saldo+"')";
         try {
@@ -97,15 +110,19 @@ public class Modelo_cuenta extends Conexion {
         }
         return false;
     }
-
+/**
+ * Metodo para agregar un titular a la cuenta
+ * @param nif
+ * @param nCuenta
+ * @return 
+ */
     public boolean aniadirTitular(String nif, String nCuenta) {
-        
-        //String q = " INSERT INTO usua_cuenta VALUES('"+nif+"','"+nCuenta+"')";
+        //String q ="INSERT INTO u_cuentas (NIF,nCuenta) VALUES(?,?)";
         try {
             CallableStatement cs = this.getConexion().prepareCall("{call Agregar_titular(?,?)}");
+            //PreparedStatement cs = this.getConexion().prepareStatement(q);
             cs.setString(1, nif);
             cs.setString(2, nCuenta);
-          //  PreparedStatement cs = this.getConexion().prepareStatement(q);
             cs.execute();
             cs.close();
             return true;
@@ -117,36 +134,31 @@ public class Modelo_cuenta extends Conexion {
         return false;
 
     }
-
+/**
+ * Metodo que quita un titular de la cuenta
+ * @param nif
+ * @param nCuenta
+ * @return 
+ */
     public boolean eliminarTitular(String nif, String nCuenta) {
-        String q = " DELETE FROM usuar_cuenta WHERE  NIF='" + nif + "' AND nCuenta='" + nCuenta + "'";
+       //String q = " DELETE FROM u_cuenta WHERE  NIF='" + nif + "' AND nCuenta='" + nCuenta + "'";
         try {
-            PreparedStatement st = this.getConexion().prepareStatement(q);
-            st.execute();
+            CallableStatement st = this.getConexion().prepareCall("{call Quitar_titular(?,?)}");
+            st.setString(1, nif);
+            st.setString(2, nCuenta);
+            st.executeUpdate();
             st.close();
             return true;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }return false;
     }
-
-    public boolean verifica_add(String nif, String cuenta){
-        int registros=0;
-        try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta WHERE NIF='"+nif+"' AND nCuenta='"+cuenta+"'");
-            ResultSet res = st.executeQuery();
-            res.next();
-            registros = res.getInt("total");
-            res.close();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        if (registros>0) {
-            return false;
-        }else{
-            return true;
-        }
-    }
+    /**
+     * Metodo que verifica que solo inserta numeros
+     * @param a
+     * @return
+     * @throws IOException 
+     */
     public String soloNumeros(String a) throws IOException {
 
         int cont = 0;

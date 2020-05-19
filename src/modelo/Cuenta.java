@@ -11,9 +11,14 @@ public class Cuenta extends Conexion{
     private String nCuenta;
     private float saldo;
     private LocalDate fecha_creacion;
-
+/**
+ * Constructor vacio
+ */
     public Cuenta (){}
-
+/**
+ * Getters y setters
+ * @return 
+ */
     public String getnCuenta() {
         return nCuenta;
     }

@@ -25,13 +25,15 @@ import vista.VentanaUsuario;
  * @author Alvaro
  */
 public class ControladorUsuario implements ActionListener, MouseListener {
-
-    DefaultTableModel m;
-    Statement sent;
+/**
+ *  Importo las clases para utilizar los métodos
+ */
     VentanaUsuario vista;
     Modelo_usuario usu = new Modelo_usuario();
     Usuario usua = new Usuario();
-
+/**
+ * Pongo en el enum los botones que tendrá la vista
+ */
     public enum AccionMVC {
         addUsuario,
         addCuentaUsu,
@@ -40,10 +42,14 @@ public class ControladorUsuario implements ActionListener, MouseListener {
         listarUsuario,
         retroceder
     }
-
+/**
+ * Switch case para que haga una acción depende de los botones que se seleccionen 
+ * @param e 
+ */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (AccionMVC.valueOf(e.getActionCommand())) {
+            //Aniade el usuario si los campos estan bien
             case addUsuario:
                 if (this.vista.NIF.getText().length() == 9
                         && this.vista.Apellidos.getText().length() > 0
@@ -59,6 +65,7 @@ public class ControladorUsuario implements ActionListener, MouseListener {
                     usua.setDireccion(this.vista.Direccion.getText());
                     usua.setEmail(this.vista.Email.getText());
                     usua.setTelefono(Integer.parseInt(this.vista.tlf.getText()));
+                    //Verifica que se pueda introducir al usuario
                     if (this.usu.NuevoUsuario(usua)) {
                         this.vista.tablaUsuario.setModel(this.usu.getTablaUsuario());
                         JOptionPane.showMessageDialog(vista, "Exito: Nuevo usuario agregado");
@@ -76,12 +83,15 @@ public class ControladorUsuario implements ActionListener, MouseListener {
                     JOptionPane.showMessageDialog(vista, "Datos muy largos o cortos");
                 }
                 break;
+                //Lista los usuarios registrados con sus cuentas pertenecientes
             case listarCuentaUsuario:
                 this.vista.tablaUsuarioCuenta.setModel(this.usu.getTablaLista());
                 break;
+                //Lista los datos de los usuarios registrados
             case listarUsuario:
                 this.vista.tablaUsuario.setModel(this.usu.getTablaUsuario());
                 break;
+                //Modifica un usuario seleccionado de la lista
             case modUsuario:
                 try {
                     usua.setDni(this.vista.NIF.getText());
@@ -105,21 +115,27 @@ public class ControladorUsuario implements ActionListener, MouseListener {
                 } catch (Exception mod) {
                     JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
                 }
+                //Habilita los campos cuando se modifica el usuario
                 this.vista.NIF.setEnabled(true);
                 this.vista.Nombre.setEnabled(true);
                 this.vista.Apellidos.setEnabled(true);
                 this.vista.Anio.setEnabled(true);
                 break;
+                //Retrocede a la ventana anterior
             case retroceder:
                 this.vista.dispose();
                 new ControladorPrincipal(new VentanaPrincipal()).iniciar();
                 break;
         }
     }
-
+/**
+ * Metodo para dar valores a los campos haciendo click en la tabla
+ * @param me 
+ */
     @Override
     public void mouseClicked(MouseEvent me) {
         if (me.getButton() == 1) {
+            //Para modificarlos se pone el campo en deshabilitado
             this.vista.NIF.setEnabled(false);
             this.vista.Nombre.setEnabled(false);
             this.vista.Apellidos.setEnabled(false);
@@ -161,7 +177,9 @@ public class ControladorUsuario implements ActionListener, MouseListener {
     public ControladorUsuario(VentanaUsuario vista) {
         this.vista = vista;
     }
-
+/**
+ * Metodo para iniciar la vista y las acciones de los botones
+ */
     public void iniciar() {
 
         try {

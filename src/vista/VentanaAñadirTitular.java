@@ -21,7 +21,10 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
     public VentanaAñadirTitular() {
         initComponents();
     }
-
+/**
+ * Metodo que filtra los registros y los muestra en la tabla
+ * @param cuenta 
+ */
     public void buscarCuenta(String cuenta){
         Modelo_cuenta cu = new Modelo_cuenta();
         
@@ -29,7 +32,10 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
         
         tablaCuentas.setModel(m);
     }
-    
+    /**
+     * Metodo que filtra los registros y los muestra en la tabla
+     * @param nif 
+     */
     public void buscarUsuario(String nif){
         Modelo_usuario usu = new Modelo_usuario();
         
@@ -120,6 +126,11 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaCuentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCuentasMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tablaCuentas);
@@ -239,19 +250,36 @@ public class VentanaAñadirTitular extends javax.swing.JFrame {
     private void sucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucursalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sucursalActionPerformed
-
+/**
+ * 
+ * @param evt 
+ */
     private void cuentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuentaKeyReleased
         buscarCuenta(cuenta.getText());
     }//GEN-LAST:event_cuentaKeyReleased
-
+/**
+ * Metodo para que cuando inserte caracteres en el campo de texto use el metodo buscar
+ * @param evt 
+ */
     private void nifKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nifKeyReleased
         buscarUsuario(nif.getText());
     }//GEN-LAST:event_nifKeyReleased
-
+/**
+ * Metodo que rellena un campo de la vista cuando se pincha un campo de la tabla
+ * @param evt 
+ */
     private void tablaUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuarioMouseClicked
         int index = tablaUsuario.getSelectedRow();
         nif_elegido.setText(String.valueOf(tablaUsuario.getValueAt(index, 0)));
     }//GEN-LAST:event_tablaUsuarioMouseClicked
+/**
+ * Metodo que rellena un campo de la vista cuando se pincha un campo de la tabla
+ * @param evt 
+ */
+    private void tablaCuentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCuentasMouseClicked
+        int index = tablaCuentas.getSelectedRow();
+        cuenta_elegida.setText(String.valueOf(tablaCuentas.getValueAt(index, 0)));
+    }//GEN-LAST:event_tablaCuentasMouseClicked
 
     /**
      * @param args the command line arguments

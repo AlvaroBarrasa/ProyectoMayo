@@ -29,7 +29,10 @@ public class VentanaOperacion extends javax.swing.JFrame {
         this.repaint();
         seleccion();
     }
-
+/**
+ * Metodo que filtra los registros y los muestra en la tabla
+ * @param nif 
+ */
     public void buscar(String nif){
         Modelo_Operacion mod = new Modelo_Operacion();
         
@@ -37,7 +40,9 @@ public class VentanaOperacion extends javax.swing.JFrame {
         
         tabla.setModel(m);
     }
-    
+    /**
+     * Metodo que asigna un grupo de botones para que solo se pueda seleccionar 1
+     */
     public void seleccion(){
         ButtonGroup grupo = new ButtonGroup();
         grupo.add(Ingreso);
@@ -203,17 +208,17 @@ public class VentanaOperacion extends javax.swing.JFrame {
                                         .addGap(59, 59, 59)
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(retroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128)
-                        .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(176, 176, 176)
                         .addComponent(Ingreso)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Retirada)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Transaccion)))
+                        .addComponent(Transaccion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(retroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(124, 124, 124)
+                        .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -226,9 +231,12 @@ public class VentanaOperacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(retroceder))
-                    .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                        .addComponent(retroceder)
+                        .addGap(47, 47, 47))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(IconoUS, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Ingreso)
                     .addComponent(Retirada)
@@ -275,7 +283,10 @@ public class VentanaOperacion extends javax.swing.JFrame {
     private void TransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TransaccionActionPerformed
-
+/**
+ * Metodo para que cuando inserte caracteres en el campo de texto use el metodo buscar
+ * @param evt 
+ */
     private void NIFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NIFKeyReleased
         buscar(NIF.getText());
     }//GEN-LAST:event_NIFKeyReleased

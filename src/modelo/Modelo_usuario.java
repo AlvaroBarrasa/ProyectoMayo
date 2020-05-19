@@ -15,7 +15,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Alvaro
  */
 public class Modelo_usuario extends Conexion {
-
+/**
+ * Metodo que lista los usuarios para la lista de la tabla de gestion de usuario
+ * @return 
+ */
     public DefaultTableModel getTablaUsuario() {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
@@ -52,7 +55,11 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
-
+/**
+ * Metodo para listar los usuarios en la lista de la ventana para añadir usuarios
+ * @param nif
+ * @return 
+ */
     public DefaultTableModel getTablaNombre(String nif) {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
@@ -86,14 +93,17 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
-
+/**
+ * Metodo para listar los titulares de todas las cuentas del banco en la ventana para gestionar usuarios
+ * @return 
+ */
     public DefaultTableModel getTablaLista() {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
-        String[] columNames = {"NIF", "nCuenta", "Saldo"};
+        String[] columNames = {"DNI", "nCuenta", "Saldo"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM us_cuentas");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -104,11 +114,11 @@ public class Modelo_usuario extends Conexion {
 
         Object[][] data = new String[registros][4];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, U.nCuenta, C.Saldo FROM usuar_cuenta U, Cuentas C WHERE C.nCuenta=U.nCuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT DNI, U.nCuenta, C.Saldo FROM us_cuentas U, Cuentas C WHERE C.nCuenta=U.nCuenta");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
-                data[i][0] = resultado.getString("NIF");
+                data[i][0] = resultado.getString("DNI");
                 data[i][1] = resultado.getString("nCuenta");
                 data[i][2] = resultado.getString("Saldo");
                 i++;
@@ -120,14 +130,18 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
-    
+    /**
+     * Metodo para listar los usuarios con sus cuentas en la ventana para quitar titulares
+     * @param cuenta
+     * @return 
+     */
     public DefaultTableModel getTablaTitular(String cuenta) {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
-        String[] columNames = {"NIF", "Apellidos", "Nombre","nCuenta"};
+        String[] columNames = {"DNI", "Apellidos", "Nombre","nCuenta"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM us_cuentas");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -138,11 +152,11 @@ public class Modelo_usuario extends Conexion {
 
         Object[][] data = new String[registros][4];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM usuar_cuenta UC, Usuario U WHERE U.NIF=UC.NIF AND UC.nCuenta LIKE '%"+cuenta+"%'");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT DNI, U.Apellidos, U.Nombre, UC.nCuenta FROM us_cuentas UC, Usuario U WHERE U.NIF=UC.DNI AND UC.nCuenta LIKE '%"+cuenta+"%'");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
-                data[i][0] = resultado.getString("NIF");
+                data[i][0] = resultado.getString("DNI");
                 data[i][1] = resultado.getString("Apellidos");
                 data[i][2] = resultado.getString("Nombre");
                 data[i][3] = resultado.getString("nCuenta");
@@ -155,14 +169,17 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
-    
+    /**
+     * Metodo para actualizar la lista cuando se borra un titular
+     * @return 
+     */
    public DefaultTableModel getTablaTitular1() {
         DefaultTableModel tablemodel = new DefaultTableModel();
         int registros = 0;
         String[] columNames = {"NIF", "Apellidos", "Nombre","nCuenta"};
         try {
             // 
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM usuar_cuenta");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT count(*) as total FROM us_cuentas");
             ResultSet res = st.executeQuery();
             res.next();
             registros = res.getInt("total");
@@ -173,7 +190,7 @@ public class Modelo_usuario extends Conexion {
 
         Object[][] data = new String[registros][4];
         try {
-            PreparedStatement st = this.getConexion().prepareStatement("SELECT U.NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM usuar_cuenta UC, Usuario U WHERE U.NIF=UC.NIF");
+            PreparedStatement st = this.getConexion().prepareStatement("SELECT NIF, U.Apellidos, U.Nombre, UC.nCuenta FROM us_cuentas UC, Usuario U WHERE U.NIF=UC.DNI");
             ResultSet resultado = st.executeQuery();
             int i = 0;
             while (resultado.next()) {
@@ -190,7 +207,11 @@ public class Modelo_usuario extends Conexion {
         }
         return tablemodel;
     }
-
+/**
+ * Metodo para insertar un usuario
+ * @param u
+ * @return 
+ */
     public boolean NuevoUsuario(Usuario u) {
         if (validar_dni(u.getDni()) && validarEmail(u.getEmail())) {
             try {
@@ -213,7 +234,11 @@ public class Modelo_usuario extends Conexion {
             return false;
         }
     }
-
+/**
+ * Metodo que valida un dni
+ * @param dni
+ * @return 
+ */
     public boolean validar_dni(String dni) {
         boolean correcto = false;
         Pattern pattern = Pattern.compile("(\\d{1,8})([TRWAGMYFPDXBNJZSQVHLCKEtrwagmyfpdxbnjzsqvhlcke])");
@@ -234,7 +259,11 @@ public class Modelo_usuario extends Conexion {
         }
         return correcto;
     }
-
+/**
+ * Metodo para validar un email
+ * @param email
+ * @return 
+ */
     public boolean validarEmail(String email) {
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         Matcher match = pattern.matcher(email);
@@ -244,7 +273,11 @@ public class Modelo_usuario extends Conexion {
             return false;
         }
     }
-
+/**
+ * Metodo que modifica los campos de un usuario
+ * @param u
+ * @return 
+ */
     public boolean ModificaUsuario(Usuario u) {
         try {
             CallableStatement cs = (CallableStatement) this.getConexion().prepareCall("{call Modifica_usuario(?,?,?,?,?,?,?)}");
